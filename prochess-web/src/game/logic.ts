@@ -19,17 +19,34 @@ const TYPE_BY_ENUM: Record<number, PieceType> = {
   6: "warrior"
 };
 
+type InteractionPreview = {
+  legalMoves: Move[];
+  restrictedNodeIds: string[];
+};
+
 export class GameState {
   public selectedPieceId: string | null = null;
-  private readonly data: ParityData;
+  private readonly data: ParityData | null;
   private readonly nodes: NodeData[];
   private readonly pieces = new Map<string, Piece>();
   private readonly pieceByNode = new Map<string, string>();
 
-  constructor(data: ParityData) {
-    this.data = data;
-    this.nodes = data.nodes;
+  constructor(dataOrNodes: ParityData | NodeData[], initialPieces?: Piece[]) {
+    if (Array.isArray(dataOrNodes)) {
+      this.data = null;
+      this.nodes = dataOrNodes;
+      if (initialPieces) {
+        this.addPieces(initialPieces);
+      }
+      return;
+    }
+    this.data = dataOrNodes;
+    this.nodes = dataOrNodes.nodes;
     this.initializePiecesFromUnityLayout();
+  }
+
+  public static fromNodes(nodes: NodeData[], pieces?: Piece[]): GameState {
+    return new GameState(nodes, pieces);
   }
 
   public getNodes(): NodeData[] {
@@ -63,19 +80,27 @@ export class GameState {
   public getMovesForSelected(): Move[] {
     const selected = this.getSelectedPiece();
     if (!selected) return [];
-    return this.getMovesForPiece(selected);
+    return this.getInteractionPreview(selected).legalMoves;
   }
 
   public getMovesForPieceId(pieceId: string): Move[] {
     const piece = this.pieces.get(pieceId);
     if (!piece) return [];
-    return this.getMovesForPiece(piece);
+    return this.getInteractionPreview(piece).legalMoves;
+  }
+
+  public getInteractionHintsForSelected(): InteractionPreview {
+    const selected = this.getSelectedPiece();
+    if (!selected) {
+      return { legalMoves: [], restrictedNodeIds: [] };
+    }
+    return this.getInteractionPreview(selected);
   }
 
   public snapshotInitialMoves(): Record<string, string[]> {
     const output: Record<string, string[]> = {};
     for (const piece of this.getPieces()) {
-      output[piece.id] = this.getMovesForPiece(piece)
+      output[piece.id] = this.getInteractionPreview(piece).legalMoves
         .map((m) => m.nodeId)
         .sort((a, b) => a.localeCompare(b));
     }
@@ -84,15 +109,26 @@ export class GameState {
 
   public tryMoveSelected(
     targetNodeId: string
-  ): { pieceId: string; fromNodeId: string; toNodeId: string } | null {
+  ): { pieceId: string; fromNodeId: string; toNodeId: string; capturedPieceId?: string; moveKind: Move["kind"] } | null {
     const selected = this.getSelectedPiece();
     if (!selected) return null;
-    if (this.pieceByNode.has(targetNodeId)) return null;
 
-    const legal = this.getMovesForPiece(selected).some((m) => m.nodeId === targetNodeId);
-    if (!legal) return null;
+    const selectedMove = this.getInteractionPreview(selected).legalMoves.find((move) => move.nodeId === targetNodeId);
+    if (!selectedMove) return null;
 
     const fromNodeId = selected.nodeId;
+    let capturedPieceId: string | undefined;
+    const occupyingPieceId = this.pieceByNode.get(targetNodeId);
+    if (occupyingPieceId) {
+      const occupyingPiece = this.pieces.get(occupyingPieceId);
+      if (!occupyingPiece || occupyingPiece.color === selected.color || selectedMove.kind !== "capture") {
+        return null;
+      }
+      this.pieces.delete(occupyingPieceId);
+      this.pieceByNode.delete(targetNodeId);
+      capturedPieceId = occupyingPieceId;
+    }
+
     this.pieceByNode.delete(selected.nodeId);
     selected.nodeId = targetNodeId;
     this.pieceByNode.set(targetNodeId, selected.id);
@@ -100,7 +136,9 @@ export class GameState {
     return {
       pieceId: selected.id,
       fromNodeId,
-      toNodeId: targetNodeId
+      toNodeId: targetNodeId,
+      capturedPieceId,
+      moveKind: selectedMove.kind
     };
   }
 
@@ -122,22 +160,31 @@ export class GameState {
     }
   }
 
-  private getMovesForPiece(piece: Piece): Move[] {
+  private addPieces(pieces: Piece[]): void {
+    for (const piece of pieces) {
+      this.pieces.set(piece.id, piece);
+      this.pieceByNode.set(piece.nodeId, piece.id);
+    }
+  }
+
+  private getInteractionPreview(piece: Piece): InteractionPreview {
+    if (!this.data) return { legalMoves: [], restrictedNodeIds: [] };
     const raySet = this.getRaySetForPiece(piece.type);
     const maxDistance = this.getMaxDistanceForPiece(piece.type);
     const hitsPerDirection = this.getHitCountLimit(piece.type);
 
     const nodeRays = this.data.raysByNode[piece.nodeId];
-    if (!nodeRays) return [];
+    if (!nodeRays) return { legalMoves: [], restrictedNodeIds: [] };
 
     const moves: Move[] = [];
+    const restrictedNodeIds: string[] = [];
     for (const dirId of raySet) {
       const hits = (nodeRays[dirId] ?? []).filter((h) => h.distance <= maxDistance);
 
       if (piece.type === "king" || piece.type === "warrior") {
         const first = hits[0];
-        if (first && !this.pieceByNode.has(first.id)) {
-          moves.push({ nodeId: first.id });
+        if (first) {
+          this.collectInteraction(piece, first.id, moves, restrictedNodeIds);
         }
         continue;
       }
@@ -145,18 +192,16 @@ export class GameState {
       if (piece.type === "horse") {
         for (let i = 0; i < hits.length && i < hitsPerDirection; i += 1) {
           const hit = hits[i];
-          if (!this.pieceByNode.has(hit.id)) {
-            moves.push({ nodeId: hit.id });
-          }
+          this.collectInteraction(piece, hit.id, moves, restrictedNodeIds);
         }
         continue;
       }
 
       for (const hit of hits) {
-        if (this.pieceByNode.has(hit.id)) {
+        const shouldStop = this.collectInteraction(piece, hit.id, moves, restrictedNodeIds);
+        if (shouldStop) {
           break;
         }
-        moves.push({ nodeId: hit.id });
       }
     }
 
@@ -168,10 +213,59 @@ export class GameState {
       unique.add(move.nodeId);
       deduped.push(move);
     }
-    return deduped;
+    return {
+      legalMoves: deduped,
+      restrictedNodeIds: Array.from(new Set(restrictedNodeIds))
+    };
+  }
+
+  private collectInteraction(
+    piece: Piece,
+    targetNodeId: string,
+    legalMoves: Move[],
+    restrictedNodeIds: string[]
+  ): boolean {
+    const occupyingPieceId = this.pieceByNode.get(targetNodeId);
+    if (!occupyingPieceId) {
+      legalMoves.push({ nodeId: targetNodeId, kind: "move" });
+      return false;
+    }
+
+    const occupyingPiece = this.pieces.get(occupyingPieceId);
+    if (!occupyingPiece) {
+      legalMoves.push({ nodeId: targetNodeId, kind: "move" });
+      return false;
+    }
+    if (occupyingPiece.color === piece.color) {
+      return true;
+    }
+
+    if (this.canCaptureAcrossArea(piece, targetNodeId)) {
+      legalMoves.push({ nodeId: targetNodeId, kind: "capture" });
+    } else {
+      restrictedNodeIds.push(targetNodeId);
+    }
+    return true;
+  }
+
+  private canCaptureAcrossArea(piece: Piece, targetNodeId: string): boolean {
+    if (piece.type === "king") {
+      return true;
+    }
+    const fromNode = this.getNodeById(piece.nodeId);
+    const targetNode = this.getNodeById(targetNodeId);
+    if (!fromNode || !targetNode) {
+      return false;
+    }
+    return this.getAreaType(fromNode) === this.getAreaType(targetNode);
+  }
+
+  private getAreaType(node: NodeData): "colored" | "colorless" {
+    return node.isColored === 0 ? "colorless" : "colored";
   }
 
   private getRaySetForPiece(type: PieceType): string[] {
+    if (!this.data) return [];
     switch (type) {
       case "castle":
         return this.data.sets.castle;

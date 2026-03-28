@@ -23,4 +23,5 @@ export interface Piece {
 
 export interface Move {
   nodeId: string;
+  kind: "move" | "capture";
 }

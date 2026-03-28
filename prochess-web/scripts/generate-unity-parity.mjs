@@ -81,6 +81,11 @@ function vecNorm(v) {
   return { x: v.x / len, y: v.y / len, z: v.z / len };
 }
 
+function yawFromQuaternion(q) {
+  const forward = vecNorm(quatRotate(q, { x: 0, y: 0, z: 1 }));
+  return Math.atan2(forward.x, forward.z);
+}
+
 function parseGameBoard(prefabPath) {
   const docs = parsePrefabDocuments(fs.readFileSync(prefabPath, "utf8"));
 
@@ -309,8 +314,9 @@ function buildTopology(nodes, rayTemplate) {
     nodes: nodes.map((n) => ({
       id: n.id,
       name: n.name,
-      x: n.position.x,
-      z: n.position.z,
+      x: n.sphereCenter.x,
+      z: n.sphereCenter.z,
+      rotationY: yawFromQuaternion(n.rotation),
       eColor: n.eColor,
       isColored: n.isColored,
       eBoardCaseType: n.eBoardCaseType

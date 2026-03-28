@@ -4,6 +4,19 @@ import { loadParityData } from "./parityLoader";
 import { ThreeBoard } from "./ThreeBoard";
 
 export class ProChessScene extends Phaser.Scene {
+  private readonly theme = {
+    bgBase: 0x08111c,
+    bgWarmA: 0x102030,
+    bgWarmB: 0x06090f,
+    hudText: "#e8f0ff",
+    hudTextDim: "#9fb6d0",
+    panel: 0x0d1724,
+    button: 0x1e2a44,
+    buttonStroke: 0x6ca0f6,
+    accentSoft: 0x87c8ff,
+    fontUI: "'Segoe UI', system-ui, sans-serif",
+    fontSerif: "Georgia, 'Times New Roman', serif"
+  };
   private statusText!: Phaser.GameObjects.Text;
   private menuLayer: Phaser.GameObjects.Container | null = null;
   private hudLayer: Phaser.GameObjects.Container | null = null;
@@ -28,34 +41,53 @@ export class ProChessScene extends Phaser.Scene {
   private isPlaying = false;
   private isLoadingBattle = false;
   private dragging = false;
+  private dragMode: "pan" | "orbit" | null = null;
+  private movedDuringDrag = false;
   private dragLast = new Phaser.Math.Vector2();
+  private screenState: "menu" | "loading" | "playing" = "menu";
+  private readonly isMobile =
+    /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.matchMedia("(pointer: coarse)").matches;
   private state: GameState | null = null;
+  private readonly useCustomGrid = false;
   private threeBoard = new ThreeBoard();
   private boardContainer: HTMLDivElement | null = null;
+  private resizeHandler: ((size: Phaser.Structs.Size) => void) | null = null;
+  private backgroundLayer: Phaser.GameObjects.Graphics[] = [];
+  private isShutdown = false;
 
   constructor() {
     super("ProChessScene");
   }
 
   create(): void {
+    this.isShutdown = false;
+    this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.shutdown, this);
+    this.events.once(Phaser.Scenes.Events.DESTROY, this.shutdown, this);
+    this.cameras.main.setBackgroundColor(0x000000);
     this.drawBackground();
     this.initThreeLayer();
+    this.setupAudioUnlock();
     this.statusText = this.add
-      .text(24, 18, "Home | Ready", {
-        fontFamily: "Georgia, 'Times New Roman', serif",
-        fontSize: "22px",
-        color: "#f5f8ff"
+      .text(32, 24, "ProChess | Ready", {
+        fontFamily: this.theme.fontUI,
+        fontSize: "28px",
+        color: this.theme.hudText,
+        fontStyle: "500",
+        shadow: { offsetX: 1, offsetY: 1, blur: 3, color: "#00000088", fill: true }
       })
-      .setDepth(200)
+      .setDepth(300)
       .setScrollFactor(0);
 
     this.setupCameraControls();
     this.createUiLayers();
     this.createMobileControls();
 
-    this.scale.on("resize", (size: Phaser.Structs.Size) => {
+    this.resizeHandler = (size: Phaser.Structs.Size) => {
+      this.drawBackground();
+      this.syncThreeLayerToCanvas();
       this.threeBoard.resize({ w: size.width, h: size.height });
-    });
+    };
+    this.scale.on("resize", this.resizeHandler);
   }
 
   update(_time: number, delta: number): void {
@@ -63,14 +95,87 @@ export class ProChessScene extends Phaser.Scene {
   }
 
   private drawBackground(): void {
-    const g = this.add.graphics();
-    g.fillGradientStyle(0x102030, 0x102030, 0x080b12, 0x080b12, 1);
-    g.fillRect(0, 0, gameWidth, gameHeight);
-    g.fillStyle(0x1e2f42, 0.25);
-    g.fillEllipse(1050, 110, 540, 260);
-    g.fillStyle(0x4a6b90, 0.08);
-    g.fillEllipse(190, 740, 520, 300);
-    g.setDepth(-50);
+    this.backgroundLayer.forEach((obj) => obj.destroy());
+    this.backgroundLayer = [];
+
+    const width = this.scale.width;
+    const height = this.scale.height;
+
+    const gradient = this.add.graphics();
+    gradient.fillGradientStyle(
+      this.theme.bgWarmA,
+      this.theme.bgWarmA,
+      this.theme.bgWarmB,
+      this.theme.bgWarmB,
+      1
+    );
+    gradient.fillRect(0, 0, width, height);
+    gradient.setAlpha(0.94).setDepth(-70);
+
+    const radialGlow = this.add.graphics();
+    radialGlow.fillStyle(0x6bbaff, 0.1);
+    radialGlow.fillEllipse(width * 0.22, height * 0.18, width * 0.44, height * 0.28);
+    radialGlow.setDepth(-69);
+
+    const shadow = this.add.graphics();
+    shadow.fillStyle(0x000000, 0.35);
+    shadow.fillEllipse(width / 2, height / 2 + 60, width * 0.82, height * 0.55);
+    shadow.setAlpha(0.28).setDepth(-60);
+
+    const glow = this.add.graphics();
+    glow.fillStyle(0xfff8e1, 0.08);
+    glow.fillEllipse(width / 2, height / 2 - 36, width * 0.9, height * 0.7);
+    glow.setDepth(-59);
+
+    const vignette = this.add.graphics();
+    vignette.fillStyle(0x02050a, 0.18);
+    vignette.fillRect(0, 0, width, height);
+    vignette.setDepth(-58);
+
+    this.backgroundLayer.push(gradient, radialGlow, shadow, glow, vignette);
+  }
+
+  private makeButton(
+    x: number,
+    y: number,
+    text: string,
+    onClick: () => void,
+    width = 240
+  ): Phaser.GameObjects.Container {
+    const container = this.add.container(x, y);
+    const bg = this.add
+      .rectangle(0, 0, width, 64, this.theme.button, 0.35)
+      .setStrokeStyle(1.5, this.theme.buttonStroke, 0.5)
+      .setAlpha(0.92);
+    const label = this.add
+      .text(0, 0, text.toUpperCase(), {
+        fontFamily: this.theme.fontUI,
+        fontSize: "25px",
+        color: this.theme.hudText,
+        fontStyle: "600"
+      })
+      .setOrigin(0.5);
+
+    bg.setInteractive({ useHandCursor: true })
+      .on("pointerover", () => bg.setAlpha(0.7).setScale(1.04))
+      .on("pointerout", () => bg.setAlpha(0.92).setScale(1))
+      .on("pointerdown", () => {
+        bg.setScale(0.97);
+        this.tweens.add({ targets: bg, scale: 1, duration: 180, ease: "Back.out" });
+        onClick();
+      });
+
+    container.add([bg, label]);
+    container.setDepth(240);
+    return container;
+  }
+
+  private refreshLayerVisibility(): void {
+    const isPlaying = this.screenState === "playing";
+    this.menuLayer?.setVisible(this.screenState === "menu");
+    this.pageLayer?.setVisible(this.screenState === "menu" && !!this.pageLayer?.visible);
+    this.hudLayer?.setVisible(isPlaying);
+    this.mobileLayer?.setVisible(isPlaying && this.isMobile);
   }
 
   private initThreeLayer(): void {
@@ -81,42 +186,69 @@ export class ProChessScene extends Phaser.Scene {
     parent.style.position = "relative";
     if (this.game.canvas) {
       this.game.canvas.style.position = "relative";
-      this.game.canvas.style.zIndex = "2";
+      this.game.canvas.style.zIndex = "1";
     }
 
     const layer = document.createElement("div");
     layer.style.position = "absolute";
-    layer.style.inset = "0";
-    layer.style.zIndex = "1";
+    layer.style.zIndex = "2";
     layer.style.pointerEvents = "none";
+    layer.dataset.prochessBoardLayer = "true";
     parent.insertBefore(layer, this.game.canvas ?? null);
     this.boardContainer = layer;
+    this.syncThreeLayerToCanvas();
     this.threeBoard.init(layer, { w: gameWidth, h: gameHeight });
+    this.threeBoard.setVisible(false);
+    this.threeBoard.setViewPreset("top");
+  }
+
+  private syncThreeLayerToCanvas(): void {
+    if (!this.boardContainer || !this.game.canvas) return;
+    const canvas = this.game.canvas;
+    this.boardContainer.style.left = `${canvas.offsetLeft}px`;
+    this.boardContainer.style.top = `${canvas.offsetTop}px`;
+    this.boardContainer.style.width = `${canvas.clientWidth}px`;
+    this.boardContainer.style.height = `${canvas.clientHeight}px`;
   }
 
   private setupCameraControls(): void {
-    this.input.on("pointerdown", (p: Phaser.Input.Pointer) => {
-      if (!this.isPlaying || p.rightButtonDown()) return;
-      this.dragging = true;
-      this.dragLast.set(p.x, p.y);
+    this.input.mouse?.disableContextMenu();
 
-      const nodeId = this.threeBoard.raycast(
-        { x: p.x, y: p.y },
-        { w: this.scale.width, h: this.scale.height }
-      );
-      if (!nodeId || !this.state) return;
-      this.handleNodeClick(nodeId);
+    this.input.on("pointerdown", (p: Phaser.Input.Pointer) => {
+      if (!this.isPlaying) return;
+      this.dragging = true;
+      this.movedDuringDrag = false;
+      this.dragLast.set(p.x, p.y);
+      const button = (p.event as MouseEvent | undefined)?.button ?? 0;
+      this.dragMode = button === 2 ? "pan" : "orbit";
     });
 
-    this.input.on("pointerup", () => {
+    this.input.on("pointerup", (p: Phaser.Input.Pointer) => {
+      if (this.isPlaying && !this.movedDuringDrag && this.dragMode === "orbit") {
+        const nodeId = this.threeBoard.raycast(
+          { x: p.x, y: p.y },
+          { w: this.scale.width, h: this.scale.height }
+        );
+        if (nodeId && this.state) {
+          this.handleNodeClick(nodeId);
+        }
+      }
       this.dragging = false;
+      this.dragMode = null;
     });
 
     this.input.on("pointermove", (p: Phaser.Input.Pointer) => {
       if (!this.isPlaying || !this.dragging) return;
       const dx = p.x - this.dragLast.x;
       const dy = p.y - this.dragLast.y;
-      this.threeBoard.panBy(dx, dy);
+      if (Math.abs(dx) + Math.abs(dy) > 2) {
+        this.movedDuringDrag = true;
+      }
+      if (this.dragMode === "orbit") {
+        this.threeBoard.orbitBy(dx, dy);
+      } else {
+        this.threeBoard.panBy(dx, dy);
+      }
       this.dragLast.set(p.x, p.y);
     });
 
@@ -124,17 +256,38 @@ export class ProChessScene extends Phaser.Scene {
       "wheel",
       (_pointer: Phaser.Input.Pointer, _objs: unknown, _dx: number, dy: number) => {
         if (!this.isPlaying) return;
-        this.threeBoard.zoomBy(-dy * 0.0008);
+        this.threeBoard.zoomBy(-dy * 0.0018);
       }
     );
+
+    this.input.keyboard?.on("keydown-ONE", () => this.threeBoard.setViewPreset("top"));
+    this.input.keyboard?.on("keydown-TWO", () => this.threeBoard.setViewPreset("side"));
+    this.input.keyboard?.on("keydown-THREE", () => this.threeBoard.setViewPreset("iso"));
+    this.input.mouse?.disableContextMenu();
+  }
+
+  private setupAudioUnlock(): void {
+    const unlock = () => {
+      const soundManager = this.sound as Phaser.Sound.BaseSoundManager & { context?: AudioContext };
+      if (!soundManager.context) return;
+      if (soundManager.context.state === "running") return;
+      void soundManager.context.resume();
+    };
+
+    this.input.once("pointerdown", unlock);
+    this.input.keyboard?.once("keydown", unlock);
   }
 
   private handleNodeClick(nodeId: string): void {
     if (!this.state) return;
     const move = this.state.tryMoveSelected(nodeId);
     if (move) {
-      this.playTone(420, 0.09);
-      this.threeBoard.animateMove(move.pieceId, move.toNodeId);
+      this.playTone(move.moveKind === "capture" ? 510 : 420, move.moveKind === "capture" ? 0.12 : 0.09);
+      if (move.moveKind === "capture") {
+        this.threeBoard.setPieces(this.state.getPieces());
+      } else {
+        this.threeBoard.animateMove(move.pieceId, move.toNodeId);
+      }
       this.syncBoardHighlights();
       this.refreshStatus();
       return;
@@ -159,45 +312,25 @@ export class ProChessScene extends Phaser.Scene {
 
     const selected = this.state.getSelectedPiece();
     if (!selected) {
+      const modeLabel = this.useCustomGrid ? "Custom triangular mode" : "Unity parity mode";
       this.statusText.setText(
-        `Unity parity mode | Pieces: ${this.state.getPieces().length} | Drag to pan, wheel to zoom`
+        `${modeLabel} | Pieces: ${this.state.getPieces().length} | Area barrier active | Drag to pan, wheel to zoom`
       );
       return;
     }
-    const legalCount = this.state.getMovesForSelected().length;
+    const preview = this.state.getInteractionHintsForSelected();
+    const captureCount = preview.legalMoves.filter((move) => move.kind === "capture").length;
+    const moveCount = preview.legalMoves.length - captureCount;
     this.statusText.setText(
-      `Selected: ${selected.type.toUpperCase()} ${selected.color} | Legal moves: ${legalCount}`
+      `Selected: ${this.getPieceLabel(selected.type)} ${selected.color} | Moves: ${moveCount} | Captures: ${captureCount} | Restricted: ${preview.restrictedNodeIds.length}`
     );
   }
 
   private createUiLayers(): void {
-    const makeButton = (
-      x: number,
-      y: number,
-      text: string,
-      onClick: () => void,
-      width = 220
-    ): Phaser.GameObjects.Container => {
-      const bg = this.add
-        .rectangle(0, 0, width, 52, 0x15283c, 0.95)
-        .setStrokeStyle(1.4, 0x87c8ff, 0.8);
-      const label = this.add
-        .text(0, 0, text, {
-          fontFamily: "Georgia, 'Times New Roman', serif",
-          fontSize: "24px",
-          color: "#f4f8ff",
-          fontStyle: "bold"
-        })
-        .setOrigin(0.5);
-      const c = this.add.container(x, y, [bg, label]).setDepth(240);
-      bg.setInteractive({ useHandCursor: true }).on("pointerdown", onClick);
-      return c;
-    };
-
     const menuBg = this.add.rectangle(680, 430, 1360, 860, 0x070b12, 0.55).setDepth(230);
     const title = this.add
       .text(680, 250, "ProChess", {
-        fontFamily: "Georgia, 'Times New Roman', serif",
+        fontFamily: this.theme.fontSerif,
         fontSize: "74px",
         color: "#eaf3ff",
         fontStyle: "bold"
@@ -206,9 +339,9 @@ export class ProChessScene extends Phaser.Scene {
       .setDepth(240);
     const subtitle = this.add
       .text(680, 310, "Hybrid three.js board + Phaser HUD", {
-        fontFamily: "Georgia, 'Times New Roman', serif",
+        fontFamily: this.theme.fontUI,
         fontSize: "22px",
-        color: "#9fb6d0"
+        color: this.theme.hudTextDim
       })
       .setOrigin(0.5)
       .setDepth(240);
@@ -221,17 +354,17 @@ export class ProChessScene extends Phaser.Scene {
       { label: "Leaderboard", x: 810, y: 520, action: () => this.openMenuPage("Leaderboard") },
       { label: "Others", x: 680, y: 585, action: () => this.openMenuPage("Others") }
     ];
-    const buttons = buttonDefs.map((b) => makeButton(b.x, b.y, b.label, b.action, 230));
+    const buttons = buttonDefs.map((b) => this.makeButton(b.x, b.y, b.label, b.action, 230));
     this.menuLayer = this.add
       .container(0, 0, [menuBg, title, subtitle, ...buttons])
       .setDepth(230)
       .setScrollFactor(0);
 
-    const pageBg = this.add.rectangle(680, 430, 760, 420, 0x0d1724, 0.95).setDepth(245);
+    const pageBg = this.add.rectangle(680, 430, 760, 420, this.theme.panel, 0.95).setDepth(245);
     pageBg.setStrokeStyle(1.6, 0x7dbbf3, 0.7);
     this.pageTitleText = this.add
       .text(680, 285, "", {
-        fontFamily: "Georgia, 'Times New Roman', serif",
+        fontFamily: this.theme.fontSerif,
         fontSize: "44px",
         color: "#eef6ff",
         fontStyle: "bold"
@@ -239,19 +372,27 @@ export class ProChessScene extends Phaser.Scene {
       .setOrigin(0.5)
       .setDepth(246);
     this.pageContentLayer = this.add.container(0, 0).setDepth(246);
-    const pageClose = makeButton(680, 560, "Back", () => this.closeMenuPage(), 190);
+    const pageClose = this.makeButton(680, 560, "Back", () => this.closeMenuPage(), 190);
     this.pageLayer = this.add
       .container(0, 0, [pageBg, this.pageTitleText, this.pageContentLayer, pageClose])
       .setDepth(245)
       .setScrollFactor(0);
     this.pageLayer.setVisible(false);
 
-    const homeBtn = makeButton(1220, 34, "Home", () => this.goHome(), 190);
+    const homeBtn = this.makeButton(1220, 34, "Home", () => this.goHome(), 190);
     this.hudLayer = this.add.container(0, 0, [homeBtn]).setDepth(240).setScrollFactor(0);
     this.hudLayer.setVisible(false);
   }
 
   private createMobileControls(): void {
+    if (!this.isMobile) {
+      this.mobileLayer = this.add.container(0, 0).setDepth(240).setScrollFactor(0);
+      this.mobileLayer.setVisible(false);
+      return;
+    }
+
+    const size = 72;
+    const gap = 78;
     const makeSmall = (
       x: number,
       y: number,
@@ -259,25 +400,28 @@ export class ProChessScene extends Phaser.Scene {
       onClick: () => void
     ): Phaser.GameObjects.Container => {
       const bg = this.add
-        .rectangle(0, 0, 54, 54, 0x18293d, 0.9)
+        .rectangle(0, 0, size, size, 0x18293d, 0.9)
         .setStrokeStyle(1, 0x90c6ff, 0.7)
         .setInteractive({ useHandCursor: true })
         .on("pointerdown", onClick);
       const text = this.add
         .text(0, 0, label, {
-          fontFamily: "Georgia, 'Times New Roman', serif",
-          fontSize: "26px",
+          fontFamily: this.theme.fontUI,
+          fontSize: "30px",
           color: "#eff5ff"
         })
         .setOrigin(0.5);
       return this.add.container(x, y, [bg, text]).setDepth(240);
     };
 
-    const zoomIn = makeSmall(52, 745, "+", () => this.threeBoard.zoomBy(0.12));
-    const zoomOut = makeSmall(52, 805, "-", () => this.threeBoard.zoomBy(-0.12));
-    const reset = makeSmall(115, 805, "R", () => this.threeBoard.resetCamera());
+    const zoomIn = makeSmall(62, 732, "+", () => this.threeBoard.zoomBy(0.12));
+    const zoomOut = makeSmall(62, 732 + gap, "-", () => this.threeBoard.zoomBy(-0.12));
+    const reset = makeSmall(62 + gap, 732 + gap, "R", () => this.threeBoard.resetCamera());
+    const top = makeSmall(62 + gap, 732, "T", () => this.threeBoard.setViewPreset("top"));
+    const side = makeSmall(62 + gap * 2, 732, "S", () => this.threeBoard.setViewPreset("side"));
+    const iso = makeSmall(62 + gap * 2, 732 + gap, "I", () => this.threeBoard.setViewPreset("iso"));
     this.mobileLayer = this.add
-      .container(0, 0, [zoomIn, zoomOut, reset])
+      .container(0, 0, [zoomIn, zoomOut, reset, top, side, iso])
       .setDepth(240)
       .setScrollFactor(0);
     this.mobileLayer.setVisible(false);
@@ -286,6 +430,7 @@ export class ProChessScene extends Phaser.Scene {
   private async startBattle(): Promise<void> {
     if (this.isLoadingBattle) return;
     this.isLoadingBattle = true;
+    this.screenState = "loading";
     this.statusText.setText("Loading battle...");
 
     if (!this.state) {
@@ -297,11 +442,14 @@ export class ProChessScene extends Phaser.Scene {
     }
 
     this.isPlaying = true;
+    this.screenState = "playing";
     this.menuLayer?.setVisible(false);
     this.pageLayer?.setVisible(false);
     this.hudLayer?.setVisible(true);
-    this.mobileLayer?.setVisible(true);
+    this.mobileLayer?.setVisible(this.isMobile);
+    this.threeBoard.setVisible(true);
     this.threeBoard.resetCamera();
+    this.threeBoard.setViewPreset("top");
     this.playTone(330, 0.12);
     this.refreshStatus();
     this.isLoadingBattle = false;
@@ -309,12 +457,14 @@ export class ProChessScene extends Phaser.Scene {
 
   private goHome(): void {
     this.isPlaying = false;
+    this.screenState = "menu";
     this.state?.selectPieceAtNode("");
     this.threeBoard.setHighlightedNodes(null, []);
     this.menuLayer?.setVisible(true);
     this.pageLayer?.setVisible(false);
     this.hudLayer?.setVisible(false);
     this.mobileLayer?.setVisible(false);
+    this.threeBoard.setVisible(false);
     this.threeBoard.resetCamera();
     this.playTone(250, 0.09);
     this.refreshStatus();
@@ -325,11 +475,13 @@ export class ProChessScene extends Phaser.Scene {
     this.pageTitleText.setText(pageName);
     this.renderPageContent(pageName);
     this.pageLayer.setVisible(true);
+    this.refreshLayerVisibility();
     this.playTone(300, 0.06);
   }
 
   private closeMenuPage(): void {
     this.pageLayer?.setVisible(false);
+    this.refreshLayerVisibility();
     this.playTone(260, 0.04);
   }
 
@@ -618,15 +770,46 @@ export class ProChessScene extends Phaser.Scene {
     const selected = this.state.getSelectedPiece();
     if (!selected) {
       this.threeBoard.setHighlightedNodes(null, []);
+      this.threeBoard.setSelectedPieceIds([]);
       return;
     }
+    const preview = this.state.getInteractionHintsForSelected();
     this.threeBoard.setHighlightedNodes(
       selected.nodeId,
-      this.state.getMovesForSelected().map((m) => m.nodeId)
+      preview.legalMoves.map((move) => move.nodeId)
     );
+    this.threeBoard.setSelectedPieceIds([selected.id]);
+  }
+
+  private getPieceLabel(type: string): string {
+    switch (type) {
+      case "horse":
+        return "PRINCESS";
+      case "castle":
+        return "CASTLE";
+      case "officer":
+        return "OFFICER";
+      case "vizier":
+        return "VIZIER";
+      case "warrior":
+        return "WARRIOR";
+      case "king":
+      default:
+        return "KING";
+    }
   }
 
   shutdown(): void {
+    if (this.isShutdown) {
+      return;
+    }
+    this.isShutdown = true;
+    if (this.resizeHandler) {
+      this.scale.off("resize", this.resizeHandler);
+      this.resizeHandler = null;
+    }
+    this.backgroundLayer.forEach((obj) => obj.destroy());
+    this.backgroundLayer = [];
     this.threeBoard.dispose();
     if (this.boardContainer?.parentElement) {
       this.boardContainer.parentElement.removeChild(this.boardContainer);

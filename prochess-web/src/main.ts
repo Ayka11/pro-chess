@@ -10,7 +10,10 @@ app.innerHTML = `
     display:flex;
     align-items:center;
     justify-content:center;
-    background:radial-gradient(circle at 20% 20%, #1b3046 0%, #0b1119 45%, #06090f 100%);
+    background:
+      radial-gradient(circle at 18% 18%, rgba(107, 186, 255, 0.22) 0%, rgba(107, 186, 255, 0) 28%),
+      radial-gradient(circle at 78% 14%, rgba(255, 220, 140, 0.14) 0%, rgba(255, 220, 140, 0) 24%),
+      linear-gradient(180deg, #102030 0%, #0b1119 46%, #06090f 100%);
     color:#eaf3ff;
     font-family: Georgia, 'Times New Roman', serif;
   ">
@@ -62,11 +65,20 @@ if (import.meta.env.PROD && "serviceWorker" in navigator) {
   });
 }
 
+window.addEventListener("beforeunload", () => {
+  const game = (window as typeof window & { __prochessGame?: Phaser.Game }).__prochessGame;
+  if (game) {
+    game.destroy(true);
+    (window as typeof window & { __prochessGame?: Phaser.Game }).__prochessGame = undefined;
+  }
+});
+
 void (async () => {
   setProgress(52, "Initializing board modules...");
   const { startGame } = await import("./startGame");
   setProgress(82, "Starting renderer...");
-  startGame();
+  const game = startGame();
+  (window as typeof window & { __prochessGame?: unknown }).__prochessGame = game;
   setProgress(100, "Ready");
   const boot = document.getElementById("boot");
   if (boot) {

@@ -3,9 +3,12 @@ export interface NodeData {
   name: string;
   x: number;
   z: number;
+  rotationY?: number;
   eColor: number;
   isColored: number;
   eBoardCaseType: number;
+  row?: number;
+  col?: number;
 }
 
 export interface RayHit {
