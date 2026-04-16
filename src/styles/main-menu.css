@@ -1,0 +1,103 @@
+/*
+  ProChess Premium UI/UX Main Menu Styles
+  --------------------------------------
+  Styles for main menu layout, title, grid, and background.
+  Import after tokens.css and glass.css.
+*/
+
+.hex-bg {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="20,2 38,11 38,29 20,38 2,29 2,11" stroke="%2300d4ff" stroke-width="1" fill="none" opacity="0.15"/></svg>');
+  opacity: 0.03;
+  animation: slowDrift 60s linear infinite;
+  z-index: var(--z-background);
+}
+
+@keyframes slowDrift {
+  0% { background-position: 0 0; }
+  100% { background-position: 200px 200px; }
+}
+
+.board-preview {
+  position: absolute;
+  bottom: -20%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.8);
+  filter: blur(40px) brightness(0.3);
+  opacity: 0.4;
+  animation: boardFloat 8s ease-in-out infinite;
+  z-index: var(--z-background);
+}
+
+@keyframes boardFloat {
+  0%, 100% { transform: translateX(-50%) scale(0.8) translateY(0); }
+  50% { transform: translateX(-50%) scale(0.8) translateY(-16px); }
+}
+
+.main-menu-header {
+  margin-top: 12vh;
+  text-align: center;
+}
+
+.main-title {
+  font-family: var(--font-display);
+  font-size: var(--text-5xl);
+  background: linear-gradient(90deg, var(--gold-primary), #fff 60%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: titleGlow 4s ease-in-out infinite alternate;
+  letter-spacing: var(--tracking-wider);
+}
+
+@keyframes titleGlow {
+  0%, 100% { text-shadow: 0 0 12px var(--gold-primary), 0 0 32px #fff; }
+  50% { text-shadow: 0 0 32px var(--gold-primary), 0 0 64px #fff; }
+}
+
+.subtitle {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: var(--cyan-primary);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  justify-content: center;
+  align-items: center;
+  margin: 8vh auto 0 auto;
+  max-width: 700px;
+}
+
+.settings-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 6vh;
+}
+
+.main-menu-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 700px;
+  padding: 32px 0 0 0;
+  color: var(--void-700);
+  font-size: var(--text-xs);
+}
+
+.version {
+  color: var(--void-700);
+}
+.social-icons {
+  color: var(--cyan-primary);
+}
+.news-ticker {
+  color: var(--gold-primary);
+}

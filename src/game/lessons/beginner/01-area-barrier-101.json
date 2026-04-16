@@ -1,0 +1,412 @@
+{
+  "id": "beginner-area-barrier-101",
+  "title": "Understanding the Area Barrier",
+  "description": "Learn how the Area Barrier restricts captures between different piece color zones. This fundamental rule is key to ProChess strategy.",
+  "difficulty": "beginner",
+  "estimatedTime": 5,
+  "steps": [
+    {
+      "stepId": 1,
+      "title": "Select Your Warrior",
+      "instruction": "Select your red **Warrior** piece on the left side of the board. Warriors are your fundamental attacking pieces.",
+      "explanation": "Warriors are flexible pieces that can move to any adjacent triangle. Understanding their movement range is fundamental to the game.",
+      "learningObjective": "Recognize Warriors as flexible, adaptable pieces that form the foundation of your army",
+      "strategic_context": "Warriors are your workhorses—they control nearby territory and can quickly adapt to threats",
+      "teaching_moment": "learn_rule",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "96"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "120"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "122"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "96",
+          "type": "strategic"
+        },
+        {
+          "nodeId": "98",
+          "type": "strategic"
+        }
+      ],
+      "correctMoves": [
+        "96",
+        "98"
+      ],
+      "hint": "Pick any red Warrior on the left side of the board.",
+      "hintsProgressive": [
+        "Pick any red Warrior on the left side of the board.",
+        "Look for the red pieces on the left. Click on one of the Warrior pieces.",
+        "Select the piece at node 96 or node 98—both are Warriors."
+      ],
+      "mistakeFeedback": "Select one of your red Warriors to continue.",
+      "mistakes_to_avoid": [
+        {
+          "nodeId": "100",
+          "explanation": "That's your King, not a Warrior. Kings are too valuable to risk early—select a Warrior instead."
+        },
+        {
+          "nodeId": "120",
+          "explanation": "That's a green enemy Warrior. Select one of your red pieces."
+        }
+      ],
+      "explanationLevels": {
+        "simple": "Warriors are flexible pieces that can move to any adjacent triangle.",
+        "detailed": "Warriors are the foundation of your army. They can move to any of the 6 adjacent triangles, making them excellent for quick attacks, defense, and controlling territory. This flexibility is why Warriors are so valuable early in the game."
+      },
+      "animation_hints": {
+        "delay_ms": 0,
+        "move_duration_ms": 500
+      }
+    },
+    {
+      "stepId": 2,
+      "title": "Move Into the Engagement Zone",
+      "instruction": "Move your Warrior toward the center. The highlighted green squares show all the moves your Warrior can make. Choose any one to move closer to the action.",
+      "explanation": "Perfect! You've moved your Warrior closer to the engagement zone. Moving toward the center forces your opponent to respond and gives you the tempo advantage.",
+      "learningObjective": "Understand that Warriors can reach any of 6 adjacent triangles and that moving toward center is strategically valuable",
+      "strategic_context": "Moving closer to the center controls key territory and forces your opponent to react rather than dictate the pace",
+      "teaching_moment": "learn_rule",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "96"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "120"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "122"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "2030044648012177813",
+          "type": "move"
+        }
+      ],
+      "correctMoves": [
+        "2030044648012177813"
+      ],
+      "hint": "Click any of the green-highlighted squares to move your Warrior.",
+      "hintsProgressive": [
+        "Pick any of the green-highlighted squares. Warriors are fast and flexible!",
+        "All 6 squares around your Warrior are legal moves. Choose the one that moves you closer to the center.",
+        "Try moving to node 101 or 103—these squares advance you toward the engagement zone."
+      ],
+      "mistakeFeedback": "Move to one of the highlighted squares.",
+      "mistakes_to_avoid": [
+        {
+          "nodeId": "100",
+          "explanation": "Your King can't move there right now. Move your selected Warrior to an adjacent square."
+        }
+      ],
+      "explanationLevels": {
+        "simple": "Warriors move to any adjacent triangle. Pick one of the highlighted squares.",
+        "detailed": "Warriors have complete flexibility—they can reach any of the 6 adjacent triangles in a single move. This adaptability makes them perfect for responding to threats and seizing opportunities. Moving toward the center (the engagement zone) is strategically sound because it increases your board control."
+      },
+      "animation_hints": {
+        "delay_ms": 100,
+        "move_duration_ms": 600
+      }
+    },
+    {
+      "stepId": 3,
+      "title": "Capture Within the Same Zone",
+      "instruction": "Your Warrior can now capture the green enemy Warrior to its right. Notice the **red pulse highlight** on the capture target—this shows valid captures. The gray squares are **blocked** because the Area Barrier prevents capturing across zone boundaries.",
+      "explanation": "Excellent! You've captured the enemy Warrior. The Area Barrier rule keeps the game balanced by preventing long-range zone-crossing captures. You can only capture enemies in the same color zone as your piece.",
+      "learningObjective": "Understand the Area Barrier rule: captures are only legal within the same piece-color zone",
+      "strategic_context": "The Area Barrier creates strategic zones of control. Each zone is a fortress—your pieces can only reach enemies within their own zone, making defensive positioning crucial",
+      "teaching_moment": "learn_rule",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "101"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "102"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "122"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "8954689471450390286",
+          "type": "capture"
+        }
+      ],
+      "correctMoves": [
+        "8954689471450390286"
+      ],
+      "hint": "Capture the green Warrior at the target marked with red.",
+      "hintsProgressive": [
+        "Click the red-highlighted square to capture the enemy Warrior there.",
+        "The red highlight shows a valid capture. Move your Warrior onto the enemy piece.",
+        "Your Warrior at node 101 can capture the green Warrior at node 102."
+      ],
+      "mistakeFeedback": "You can only capture the piece in the same zone. Move to the red-highlighted square.",
+      "mistakes_to_avoid": [
+        {
+          "nodeId": "103",
+          "explanation": "Moving here would cross the Area Barrier boundary. You cannot capture across zone lines—captures must happen within the same colored zone."
+        },
+        {
+          "nodeId": "120",
+          "explanation": "This square is blocked by the Area Barrier. The green Warrior is too far away because it's in a different zone."
+        }
+      ],
+      "explanationLevels": {
+        "simple": "The Area Barrier prevents captures across zone boundaries. Only capture enemies in your zone.",
+        "detailed": "The Area Barrier is ProChess's core balancing mechanic. When pieces enter different colored zones, they lose the ability to capture across that boundary. This means your Warrior can capture the nearby green piece in its zone, but cannot reach enemies in other zones. This restriction shapes all strategic decisions—you must position pieces carefully to threaten enemy positions while protecting your own."
+      },
+      "animation_hints": {
+        "delay_ms": 200,
+        "move_duration_ms": 700
+      }
+    },
+    {
+      "stepId": 4,
+      "title": "Recognize the Barrier Limitation",
+      "instruction": "Your Warrior at the boundary cannot capture the green piece beyond the Area Barrier. The gray squares show **blocked positions**—these are off-limits due to the zone boundary. Try moving to understand why this restriction matters.",
+      "explanation": "Well done! You've discovered why the Area Barrier is crucial to game balance. Without it, pieces could capture from anywhere, making defense impossible. The Barrier creates zones of strategic control.",
+      "learningObjective": "Recognize and understand the practical limitations of the Area Barrier rule",
+      "strategic_context": "Understanding limitations (what you CAN'T do) is as important as understanding possibilities. The Barrier teaches you to position pieces defensively and plan multi-step tactics.",
+      "teaching_moment": "spot_mistake",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "103"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "120"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "122"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "7591666522544083384",
+          "type": "capture"
+        }
+      ],
+      "correctMoves": [
+        "7591666522544083384"
+      ],
+      "hint": "Move to one of the green squares. The gray squares are blocked by the Area Barrier.",
+      "hintsProgressive": [
+        "Move to either green square. Notice the gray squares are unreachable due to the Area Barrier.",
+        "You can move to node 104 or node 102, but the Area Barrier prevents reaching node 120.",
+        "The green enemy piece is too far—it's protected by the zone boundary. Move close instead."
+      ],
+      "mistakeFeedback": "The gray squares are blocked by the Area Barrier. Move to a green square instead.",
+      "mistakes_to_avoid": [
+        {
+          "nodeId": "120",
+          "explanation": "The Area Barrier blocks this capture. Even though the enemy piece is nearby, the zone boundary prevents you from reaching it."
+        },
+        {
+          "nodeId": "118",
+          "explanation": "Blocked by the Area Barrier. Captures across zone lines are forbidden—this is the core rule."
+        }
+      ],
+      "explanationLevels": {
+        "simple": "Area Barrier blocks captures across zone boundaries. You can't reach enemies in other zones.",
+        "detailed": "This step teaches a critical lesson: the Area Barrier isn't just a rule—it's a strategic tool. Enemies in other zones are temporarily safe from your Warriors, forcing you to either (1) move your own pieces into their zone to threaten them, or (2) use special pieces like the King that can cross barriers. This creates interesting tactical decisions and prevents overpowered long-range attacks."
+      },
+      "animation_hints": {
+        "delay_ms": 100,
+        "move_duration_ms": 600
+      }
+    },
+    {
+      "stepId": 5,
+      "title": "The King Breaks the Rule",
+      "instruction": "Your King is the exception to the Area Barrier rule. The **King can cross zone boundaries** and capture enemies even across the barrier. Move your King to demonstrate its unique power.",
+      "explanation": "Perfect! Your King has breached the barrier. Kings are the only pieces that ignore the Area Barrier, making them invaluable for threat creation and escape routes. This exception is why Kings are your most important pieces.",
+      "learningObjective": "Understand that Kings have a unique exception to the Area Barrier rule, making them strategically irreplaceable",
+      "strategic_context": "Kings' barrier-crossing ability makes them the most powerful and valuable pieces. They can threaten enemies across zone boundaries and execute surprising attacks. This is why protecting your King is paramount.",
+      "teaching_moment": "strategy_intro",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "103"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "120"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "122"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "5935033342762625220",
+          "type": "capture"
+        }
+      ],
+      "correctMoves": [
+        "5935033342762625220"
+      ],
+      "hint": "Move your King to one of the squares in a different colored zone (highlighted in green).",
+      "hintsProgressive": [
+        "Click the King, then move it to a square that crosses the zone boundary. Notice how this is allowed!",
+        "Your King at node 100 can move to node 110 or 111—both cross into the green zone.",
+        "Move your King to node 111 to show its barrier-crossing power."
+      ],
+      "mistakeFeedback": "Move your King across the zone boundary into green territory. The King ignores the Area Barrier!",
+      "mistakes_to_avoid": [
+        {
+          "nodeId": "99",
+          "explanation": "Moving backward doesn't demonstrate the King's power. Move the King into the green zone (node 110 or 111) to cross the barrier."
+        }
+      ],
+      "explanationLevels": {
+        "simple": "Kings can cross the Area Barrier. This makes them the most powerful and valuable pieces.",
+        "detailed": "Kings are the game's most critical pieces. Unlike Warriors and other pieces, Kings completely ignore the Area Barrier—they can move into and capture from any zone. This exception makes Kings invaluable for creating unexpected threats and escaping danger. The fact that losing your King means losing the game underscores their importance. Strategic play revolves around protecting your King while using it to create threats."
+      },
+      "animation_hints": {
+        "delay_ms": 200,
+        "move_duration_ms": 700,
+        "auto_advance_ms": 3000
+      }
+    }
+  ]
+}

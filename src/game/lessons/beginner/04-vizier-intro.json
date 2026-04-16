@@ -1,0 +1,106 @@
+{
+  "id": "04-vizier-intro",
+  "title": "The Vizier – Master of Both Paths",
+  "description": "Learn how the Vizier combines Castle and Officer movement.",
+  "difficulty": "beginner",
+  "estimatedTime": 6,
+  "steps": [
+    {
+      "stepId": 1,
+      "title": "Vizier Movement",
+      "instruction": "Move your Vizier using either side or vertex directions.",
+      "explanation": "The Vizier is unique — it can slide along both side edges (like Castle) and vertex connections (like Officer).",
+      "position": [
+        {
+          "id": "red1-vizier-1",
+          "type": "vizier",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "120"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "7276090465716716890",
+          "type": "move"
+        }
+      ],
+      "correctMoves": [
+        "7276090465716716890"
+      ],
+      "hint": "Try both directions to see the difference.",
+      "teaching_moment": "Viziers are excellent for controlling large areas of the board."
+    },
+    {
+      "stepId": 2,
+      "title": "Vizier Capture",
+      "instruction": "Capture the enemy piece inside the Conflict Zone.",
+      "explanation": "Because both pieces are on colored triangles, the capture is allowed.",
+      "position": [
+        {
+          "id": "red1-vizier-1",
+          "type": "vizier",
+          "color": "red1",
+          "nodeId": "101"
+        },
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "105"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "8954689471450390286",
+          "type": "capture"
+        }
+      ],
+      "correctMoves": [
+        "8954689471450390286"
+      ],
+      "mistakeFeedback": "Remember: captures are only legal when both pieces share the same area type."
+    }
+  ]
+}

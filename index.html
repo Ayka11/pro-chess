@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#102030" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23181c22'/><text x='50' y='60' font-size='70' font-weight='bold' text-anchor='middle' fill='%23278dff' font-family='Arial'>♟</text></svg>" />
+    <title>ProChess Web</title>
+    <style>
+      :root {
+        --app-bg:
+          radial-gradient(circle at 18% 20%, rgba(92, 146, 255, 0.24) 0%, rgba(92, 146, 255, 0) 28%),
+          radial-gradient(circle at 82% 16%, rgba(69, 223, 255, 0.12) 0%, rgba(69, 223, 255, 0) 22%),
+          radial-gradient(circle at 50% 72%, rgba(255, 184, 77, 0.08) 0%, rgba(255, 184, 77, 0) 30%),
+          linear-gradient(145deg, rgba(20, 34, 56, 0.92) 0%, rgba(7, 11, 20, 0) 52%),
+          linear-gradient(180deg, #101827 0%, #090d16 42%, #05070d 74%, #020307 100%);
+        --app-grid:
+          linear-gradient(rgba(150, 190, 255, 0.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(150, 190, 255, 0.045) 1px, transparent 1px);
+        --app-noise:
+          radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.18) 0 1px, transparent 1.4px),
+          radial-gradient(circle at 72% 62%, rgba(124, 196, 255, 0.18) 0 1px, transparent 1.5px),
+          radial-gradient(circle at 44% 78%, rgba(255, 214, 138, 0.16) 0 1px, transparent 1.6px);
+      }
+      html,
+      body,
+      #app {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--app-bg);
+      }
+      body {
+        min-height: 100vh;
+        color: #e8f0ff;
+      }
+      #app {
+        position: relative;
+        isolation: isolate;
+        background:
+          linear-gradient(180deg, rgba(4, 7, 12, 0.1), rgba(4, 7, 12, 0.68)),
+          var(--app-bg);
+      }
+      #app::before,
+      #app::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      #app::before {
+        background:
+          radial-gradient(circle at 50% 50%, rgba(130, 180, 255, 0.08) 0%, rgba(130, 180, 255, 0) 58%),
+          var(--app-grid);
+        background-size: auto, 56px 56px, 56px 56px;
+        opacity: 0.34;
+        mix-blend-mode: screen;
+      }
+      #app::after {
+        background-image: var(--app-noise);
+        background-size: 220px 220px, 280px 280px, 340px 340px;
+        background-position: 0 0, 40px 70px, 120px 160px;
+        opacity: 0.2;
+      }
+      canvas {
+        display: block;
+        position: relative;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

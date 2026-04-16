@@ -1,0 +1,57 @@
+{
+  "id": "05-princess-jump",
+  "title": "The Princess – The Jumper",
+  "description": "Master the Princess's unique jumping ability.",
+  "difficulty": "beginner",
+  "estimatedTime": 5,
+  "steps": [
+    {
+      "stepId": 1,
+      "title": "Princess Jump",
+      "instruction": "Jump your Princess exactly 3 steps away.",
+      "explanation": "The Princess can jump over any pieces. She always moves exactly 3 triangles.",
+      "position": [
+        {
+          "id": "red1-horse-1",
+          "type": "horse",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "120"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "7276090465716716890",
+          "type": "move"
+        }
+      ],
+      "correctMoves": [
+        "7276090465716716890"
+      ],
+      "teaching_moment": "Use the Princess to bypass crowded areas and strike deep into enemy territory."
+    }
+  ]
+}

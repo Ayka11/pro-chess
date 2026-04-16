@@ -1,0 +1,59 @@
+{
+  "id": "11-advanced-tactics",
+  "title": "Advanced Tactics & Combinations",
+  "description": "Forks, discovered attacks, and sacrifices on the hex board",
+  "difficulty": "advanced",
+  "estimatedTime": 15,
+  "steps": [
+    {
+      "stepId": 1,
+      "title": "The Fork",
+      "instruction": "Find a move that attacks two enemy pieces at once",
+      "explanation": "A fork is extremely powerful because the opponent can only save one piece.",
+      "position": [
+        {
+          "id": "red1-vizier-1",
+          "type": "vizier",
+          "color": "red1",
+          "nodeId": "104"
+        },
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "105"
+        },
+        {
+          "id": "green1-officer-1",
+          "type": "officer",
+          "color": "green1",
+          "nodeId": "106"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "7475480187108796015",
+          "type": "move"
+        }
+      ],
+      "correctMoves": [
+        "7475480187108796015"
+      ],
+      "hint": "Use the Vizier's long reach to land on the fork square.",
+      "mistakeFeedback": "Look for the move that creates pressure on two enemy pieces at once.",
+      "teaching_moment": "Look for pieces that control both side and vertex lines."
+    }
+  ]
+}

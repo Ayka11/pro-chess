@@ -1,0 +1,96 @@
+{
+  "id": "beginner-turn-order-enforcement",
+  "title": "Turn Order Mastery",
+  "description": "Learn and practice the enforced play order: red, yellow, green, then each with the white button.",
+  "difficulty": "beginner",
+  "estimatedTime": 5,
+  "steps": [
+    {
+      "stepId": 1,
+      "title": "Red Moves First",
+      "instruction": "Move the red piece.",
+      "explanation": "Red always plays first.",
+      "position": [
+        { "id": "red1-warrior-1", "type": "warrior", "color": "red1", "nodeId": "96" },
+        { "id": "yellow1-warrior-1", "type": "warrior", "color": "yellow1", "nodeId": "108" },
+        { "id": "green1-warrior-1", "type": "warrior", "color": "green1", "nodeId": "120" }
+      ],
+      "highlightedNodes": [],
+      "correctMoves": ["97", "98", "99"],
+      "expectedColor": "red1"
+    },
+    {
+      "stepId": 2,
+      "title": "Yellow Moves Next",
+      "instruction": "Move the yellow piece.",
+      "explanation": "Yellow plays after red.",
+      "position": [
+        { "id": "red1-warrior-1", "type": "warrior", "color": "red1", "nodeId": "97" },
+        { "id": "yellow1-warrior-1", "type": "warrior", "color": "yellow1", "nodeId": "108" },
+        { "id": "green1-warrior-1", "type": "warrior", "color": "green1", "nodeId": "120" }
+      ],
+      "highlightedNodes": [],
+      "correctMoves": ["107", "109", "111"],
+      "expectedColor": "yellow1"
+    },
+    {
+      "stepId": 3,
+      "title": "Green Moves Third",
+      "instruction": "Move the green piece.",
+      "explanation": "Green plays after yellow.",
+      "position": [
+        { "id": "red1-warrior-1", "type": "warrior", "color": "red1", "nodeId": "97" },
+        { "id": "yellow1-warrior-1", "type": "warrior", "color": "yellow1", "nodeId": "109" },
+        { "id": "green1-warrior-1", "type": "warrior", "color": "green1", "nodeId": "120" }
+      ],
+      "highlightedNodes": [],
+      "correctMoves": ["119", "121", "123"],
+      "expectedColor": "green1"
+    },
+    {
+      "stepId": 4,
+      "title": "Red with White Button",
+      "instruction": "Move the red piece using the white button.",
+      "explanation": "Red now plays with the white button.",
+      "position": [
+        { "id": "red1-warrior-1", "type": "warrior", "color": "red1", "nodeId": "97" },
+        { "id": "yellow1-warrior-1", "type": "warrior", "color": "yellow1", "nodeId": "109" },
+        { "id": "green1-warrior-1", "type": "warrior", "color": "green1", "nodeId": "121" }
+      ],
+      "highlightedNodes": [],
+      "correctMoves": ["96", "98", "99"],
+      "expectedColor": "red1",
+      "withWhiteButton": true
+    },
+    {
+      "stepId": 5,
+      "title": "Yellow with White Button",
+      "instruction": "Move the yellow piece using the white button.",
+      "explanation": "Yellow now plays with the white button.",
+      "position": [
+        { "id": "red1-warrior-1", "type": "warrior", "color": "red1", "nodeId": "98" },
+        { "id": "yellow1-warrior-1", "type": "warrior", "color": "yellow1", "nodeId": "109" },
+        { "id": "green1-warrior-1", "type": "warrior", "color": "green1", "nodeId": "121" }
+      ],
+      "highlightedNodes": [],
+      "correctMoves": ["107", "108", "110"],
+      "expectedColor": "yellow1",
+      "withWhiteButton": true
+    },
+    {
+      "stepId": 6,
+      "title": "Green with White Button",
+      "instruction": "Move the green piece using the white button.",
+      "explanation": "Green now plays with the white button.",
+      "position": [
+        { "id": "red1-warrior-1", "type": "warrior", "color": "red1", "nodeId": "98" },
+        { "id": "yellow1-warrior-1", "type": "warrior", "color": "yellow1", "nodeId": "108" },
+        { "id": "green1-warrior-1", "type": "warrior", "color": "green1", "nodeId": "121" }
+      ],
+      "highlightedNodes": [],
+      "correctMoves": ["120", "122", "123"],
+      "expectedColor": "green1",
+      "withWhiteButton": true
+    }
+  ]
+}

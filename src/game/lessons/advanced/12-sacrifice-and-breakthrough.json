@@ -1,0 +1,98 @@
+{
+  "id": "12-sacrifice-and-breakthrough",
+  "title": "Sacrifice & Breakthrough",
+  "description": "Learn when to sacrifice material to open the enemy position",
+  "difficulty": "advanced",
+  "estimatedTime": 14,
+  "steps": [
+    {
+      "stepId": 1,
+      "title": "The Sacrifice",
+      "instruction": "Sacrifice your Officer to break through the defense.",
+      "explanation": "Sometimes giving up a strong piece opens lines for a decisive attack.",
+      "position": [
+        {
+          "id": "red1-officer-1",
+          "type": "officer",
+          "color": "red1",
+          "nodeId": "106"
+        },
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "105"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "4306432181167338537",
+          "type": "move"
+        }
+      ],
+      "correctMoves": [
+        "4306432181167338537"
+      ],
+      "hint": "Move the Officer into the line that opens the defense.",
+      "mistakeFeedback": "Choose the move that creates the breakthrough, not a random advance.",
+      "teaching_moment": "A well-timed sacrifice can shatter opponent coordination inside the Conflict Zone.",
+      "learningObjective": "Recognize when material is less important than initiative and king safety."
+    },
+    {
+      "stepId": 2,
+      "title": "The Breakthrough",
+      "instruction": "Follow up the sacrifice with a decisive capture.",
+      "explanation": "After the sacrifice, remaining pieces can flood the zone.",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "107"
+        },
+        {
+          "id": "red1-officer-1",
+          "type": "officer",
+          "color": "red1",
+          "nodeId": "106"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "105"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "5293638464218715327",
+          "type": "move"
+        }
+      ],
+      "correctMoves": [
+        "5293638464218715327"
+      ],
+      "hint": "Follow the sacrifice by advancing the Warrior into the opened line.",
+      "mistakeFeedback": "Pick the breakthrough move that continues the attack.",
+      "strategic_context": "The goal is not to win material, but to reach 10 captures or checkmate."
+    }
+  ]
+}

@@ -1,0 +1,592 @@
+{
+  "id": "beginner-king-officer-intro",
+  "title": "King & Officer: Power Pieces",
+  "description": "Meet the King and Officer—special pieces that define advanced strategy. Kings cross barriers and Officer sees in straight lines.",
+  "difficulty": "beginner",
+  "estimatedTime": 6,
+  "steps": [
+    {
+      "stepId": 1,
+      "title": "Meet the King",
+      "instruction": "Your **King** is your most valuable piece. Losing your King means losing the game. Select your King to acknowledge its importance.",
+      "explanation": "Your King is highlighted. This is your most precious asset. Every decision you make revolves around protecting your King while using it to create threats. Kings are the centerpiece of strategy.",
+      "learningObjective": "Understand that the King is the most valuable piece; losing it means losing the entire game",
+      "strategic_context": "Your King is your lifeline. Protect it fiercely. But don't hide it—used wisely, your King is also a powerful weapon. Good players balance defense and offense around their King.",
+      "teaching_moment": "learn_rule",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "96"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "red1-officer-1",
+          "type": "officer",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "120"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "122"
+        },
+        {
+          "id": "green1-officer-1",
+          "type": "officer",
+          "color": "green1",
+          "nodeId": "118"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "100",
+          "type": "strategic"
+        }
+      ],
+      "correctMoves": [
+        "100"
+      ],
+      "hint": "Click on your red King at the highlighted position.",
+      "hintsProgressive": [
+        "Select your King. It's the most important piece on your side.",
+        "Your King is highlighted at node 100. Click here to select it.",
+        "The King is your most valuable asset. Losing it = losing the game."
+      ],
+      "mistakeFeedback": "Select your King. It's the piece highlighted in blue on your side of the board.",
+      "mistakes_to_avoid": [
+        {
+          "nodeId": "96",
+          "explanation": "That's a Warrior, not your King. Warriors are valuable but expendable. Select your King instead."
+        },
+        {
+          "nodeId": "120",
+          "explanation": "That's the enemy King. Protect your own King (red1). Select the highlighted red King."
+        }
+      ],
+      "explanationLevels": {
+        "simple": "The King is your most important piece. Losing it = game over.",
+        "detailed": "In ProChess, your King is the centerpiece of your strategy. Unlike other games where the King is purely defensive, ProChess Kings are powerful offensive pieces. However, they remain your most precious asset—one critical mistake can lose the entire game. Understanding when to defend and when to attack with your King separates strong players from weak ones."
+      },
+      "animation_hints": {
+        "delay_ms": 0,
+        "move_duration_ms": 500
+      }
+    },
+    {
+      "stepId": 2,
+      "title": "The King Moves One Step",
+      "instruction": "Kings have limited movement—they can only move to **adjacent triangles** (4–5 squares). This is fewer options than Warriors' 6 directions. Move your King to any adjacent square.",
+      "explanation": "Good! Your King moved to an adjacent square. While Kings have fewer movement options than Warriors, their ability to ignore the Area Barrier makes them far more powerful overall. Limited mobility on the board, unlimited range through barriers.",
+      "learningObjective": "Understand that Kings move only to adjacent triangles, limiting their mobility compared to Warriors",
+      "strategic_context": "The King's limited mobility makes it slightly vulnerable in open board, but its barrier-crossing ability compensates. This trade-off defines King-centric strategy.",
+      "teaching_moment": "learn_rule",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "96"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "red1-officer-1",
+          "type": "officer",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "120"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "122"
+        },
+        {
+          "id": "green1-officer-1",
+          "type": "officer",
+          "color": "green1",
+          "nodeId": "118"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "99",
+          "type": "move"
+        },
+        {
+          "nodeId": "101",
+          "type": "move"
+        },
+        {
+          "nodeId": "109",
+          "type": "move"
+        },
+        {
+          "nodeId": "110",
+          "type": "move"
+        }
+      ],
+      "correctMoves": [
+        "2601875652598059360"
+      ],
+      "hint": "Move your King to one of the green-highlighted adjacent squares.",
+      "hintsProgressive": [
+        "Pick any of the 4 adjacent squares to move your King.",
+        "Your King can reach any of the highlighted squares. Warriors can also reach 6 adjacent squares, but 4 is still plenty for the King.",
+        "Try moving your King to node 101 or node 110."
+      ],
+      "mistakeFeedback": "Move your King to an adjacent square—one of the highlighted positions.",
+      "mistakes_to_avoid": [
+        {
+          "nodeId": "96",
+          "explanation": "Too far away. Kings move only to adjacent squares, not multiple steps like Warriors can."
+        },
+        {
+          "nodeId": "120",
+          "explanation": "That's too far—across the entire board. Kings move one step at a time to adjacent squares only."
+        }
+      ],
+      "explanationLevels": {
+        "simple": "Kings move only to adjacent squares (4–5 directions). This is fewer than Warriors' 6.",
+        "detailed": "Kings have slightly restricted mobility compared to Warriors—they can reach 4–5 adjacent triangles depending on board topology, whereas Warriors reach a full 6. This limitation makes Kings vulnerable to being trapped if surrounded. However, Kings make up for this with their unique ability to ignore the Area Barrier entirely and capture enemies without zone restrictions. The trade-off is intentional: limited mobility in exchange for strategic flexibility."
+      },
+      "animation_hints": {
+        "delay_ms": 100,
+        "move_duration_ms": 600
+      }
+    },
+    {
+      "stepId": 3,
+      "title": "King Crosses the Barrier",
+      "instruction": "Your King's superpower: it **ignores the Area Barrier**. Move your King from the red zone into the green zone. The barrier can't stop your King!",
+      "explanation": "Excellent! Your King moved across the zone boundary. This is the King's defining power—while Warriors are trapped by the Area Barrier, your King can move freely between zones. This makes Kings irreplaceable.",
+      "learningObjective": "Understand that Kings uniquely cross the Area Barrier, enabling surprise attacks and dramatic escapes",
+      "strategic_context": "The King's barrier-crossing ability is its superpower. Use it to threaten enemies from unexpected angles and create unstoppable tactical combinations. Smart Kings turn the board inside out.",
+      "teaching_moment": "strategy_intro",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "96"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "red1-officer-1",
+          "type": "officer",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "120"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "122"
+        },
+        {
+          "id": "green1-officer-1",
+          "type": "officer",
+          "color": "green1",
+          "nodeId": "118"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "5935033342762625220",
+          "type": "move"
+        }
+      ],
+      "correctMoves": [
+        "5935033342762625220"
+      ],
+      "hint": "Move your King into the green zone. Your King isn't restricted by the Area Barrier!",
+      "hintsProgressive": [
+        "Move to node 119 or 121—both are in the green zone. Your King can go there!",
+        "Notice the Area Barrier doesn't block your King. Move across it boldly.",
+        "Your unique King power: ignore the barrier. Move to node 119 or node 121 in the green zone."
+      ],
+      "mistakeFeedback": "Move your King across the zone boundary into green territory. The King ignores the Area Barrier!",
+      "mistakes_to_avoid": [
+        {
+          "nodeId": "110",
+          "explanation": "Still in red territory. Move your King further—cross into the green zone to show the barrier-crossing power."
+        }
+      ],
+      "explanationLevels": {
+        "simple": "Kings ignore the Area Barrier. This is their superpower.",
+        "detailed": "The King's barrier immunity is its most distinctive feature and is what makes Kings so strategically important. While Warriors and other pieces are geographically confined to their zones (due to capture restrictions), Kings can move freely between zones. This allows for incredible tactical possibilities: King infiltration can threaten the enemy's entire position, create escape routes, and execute multi-zone tactics. Master players use their Kings aggressively to generate threats while normal pieces provide support."
+      },
+      "animation_hints": {
+        "delay_ms": 200,
+        "move_duration_ms": 700
+      }
+    },
+    {
+      "stepId": 4,
+      "title": "Meet the Officer",
+      "instruction": "Introducing the **Officer**—your range-based attacker. Officers see in straight lines and can hit targets far away. Unlike Warriors (adjacent only) and Kings (nearby only), Officers are snipers. Select your Officer.",
+      "explanation": "Good! You've selected your Officer. Officers are specialized pieces for long-range tactics. While Warriors control nearby territory and Kings handle dynamic threats, Officers enforce distant threats and create control zones.",
+      "learningObjective": "Recognize Officers as range-based attackers that threaten distant enemies along straight lines",
+      "strategic_context": "Officers bring firepower to your army. They control distant territories and force enemies to respect long-range threats. Combining Officers with Warriors and Kings creates a balanced, powerful force.",
+      "teaching_moment": "learn_rule",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "96"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "red1-officer-1",
+          "type": "officer",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "120"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "122"
+        },
+        {
+          "id": "green1-officer-1",
+          "type": "officer",
+          "color": "green1",
+          "nodeId": "118"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "102",
+          "type": "strategic"
+        },
+        {
+          "nodeId": "104",
+          "type": "strategic"
+        },
+        {
+          "nodeId": "106",
+          "type": "strategic"
+        },
+        {
+          "nodeId": "103",
+          "type": "strategic"
+        },
+        {
+          "nodeId": "101",
+          "type": "strategic"
+        }
+      ],
+      "correctMoves": [
+        "102"
+      ],
+      "hint": "Click on your Officer to select it. It's the piece at the position highlighted in blue.",
+      "hintsProgressive": [
+        "Select your Officer at node 102. It's highlighted on the board.",
+        "Your Officer can see in straight lines far across the board. Click on it to select.",
+        "The Officer is your range-based piece. Select the red piece at node 102."
+      ],
+      "mistakeFeedback": "Select your Officer—the red piece at node 102.",
+      "mistakes_to_avoid": [
+        {
+          "nodeId": "96",
+          "explanation": "That's a Warrior—it attacks adjacent only. Your Officer is at node 102, over there."
+        },
+        {
+          "nodeId": "118",
+          "explanation": "That's the enemy Officer. Select your own red Officer at node 102."
+        }
+      ],
+      "explanationLevels": {
+        "simple": "Officers attack in straight lines across the board. Much more range than Warriors!",
+        "detailed": "Officers are specialized attackers. Unlike Warriors (which move to the 6 adjacent triangles), Officers see along straight lines and can threaten enemies many steps away. Think of them as your snipers. They provide long-range defense, control crucial distant territory, and create threats the enemy must respect. Combining Officers with Warriors and Kings gives you a balanced army with coverage at every distance."
+      },
+      "animation_hints": {
+        "delay_ms": 0,
+        "move_duration_ms": 500
+      }
+    },
+    {
+      "stepId": 5,
+      "title": "Officer vs Warrior: Choose Wisely",
+      "instruction": "Now a tactical lesson: which piece is best for this moment? An enemy Warrior is 3 squares away. Your **Warrior** can reach 1 square. Your **Officer** can reach 3+ squares in a line. Which piece should attack?",
+      "explanation": "Perfect! You chose the Officer. This is tactical wisdom: different pieces excel in different situations. Warriors control nearby space. Officers reach distant targets. Learn when to use each piece, and you'll dominate.",
+      "learningObjective": "Understand that piece choice depends on tactical position: Warriors for nearby control, Officers for distant threats",
+      "strategic_context": "Tactical decision-making defines ProChess mastery. A Warrior wasted on a distant target is ineffective; an Officer wasted on nearby squares is also ineffective. Smart players choose the right tool for each job.",
+      "teaching_moment": "solve_puzzle",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "96"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "red1-officer-1",
+          "type": "officer",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "107"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "122"
+        },
+        {
+          "id": "green1-officer-1",
+          "type": "officer",
+          "color": "green1",
+          "nodeId": "118"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "7276090465716716890",
+          "type": "capture"
+        }
+      ],
+      "correctMoves": [
+        "7276090465716716890"
+      ],
+      "hint": "Use your Officer to attack the distant enemy. Move along the line to node 104 or 106.",
+      "hintsProgressive": [
+        "The Warrior can reach node 97. The Officer can reach nodes 104 or 106. Which is better?",
+        "The enemy is at node 107. Your Officer can hit it from a distance. Capture with your Officer.",
+        "Move your Officer to node 106 to capture the distant enemy."
+      ],
+      "mistakeFeedback": "The enemy is too far for a Warrior. Use your Officer's range instead. Move to node 104 or 106.",
+      "mistakes_to_avoid": [
+        {
+          "nodeId": "96",
+          "explanation": "Warriors can't reach enemies 3+ squares away. This target requires your Officer's range. Move your Officer instead."
+        },
+        {
+          "nodeId": "98",
+          "explanation": "Warriors can only reach adjacent squares. The enemy at node 107 is too distant. Use your Officer."
+        }
+      ],
+      "explanationLevels": {
+        "simple": "Officers reach distant targets. Warriors reach nearby squares. Choose the right piece for each situation.",
+        "detailed": "This is a core lesson in tactical execution. Warriors are for proximal control—they respond quickly to nearby threats and consolidate nearby territory. Officers are for strategic threats—they control distant board regions and punish careless enemy positioning. A beginner mistake is using the wrong piece: sending a Warrior at a distant target wastes tempo, or committing an Officer to defend nearby space is overkill. Master players allocate resources efficiently. Your Warrior defends nearby; your Officer controls the distant zones. Combined, they dominate the board."
+      },
+      "animation_hints": {
+        "delay_ms": 100,
+        "move_duration_ms": 700
+      }
+    },
+    {
+      "stepId": 6,
+      "title": "King & Officer Coordination",
+      "instruction": "Watch how great players combine pieces. Your **King** and **Officer** work together to create unstoppable threats. The King moves into position, the Officer provides support. Let's execute a 3-move combination.",
+      "explanation": "Excellent! You've executed a coordinated attack. The King moved to threaten the enemy, the Officer provided covering fire, and together they forced the enemy into submission. This is how masters win—through piece coordination and tempo.",
+      "learningObjective": "Understand how combining King and Officer creates tactical advantages that single pieces cannot",
+      "strategic_context": "The most beautiful ProChess games feature perfectly coordinated pieces. Your King isn't alone—support it with your Officers. Warriors control nearby space. Officers project distant threats. Kings execute the final blow. Synchronize them, and you're unstoppable.",
+      "teaching_moment": "combo",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "96"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "98"
+        },
+        {
+          "id": "red1-officer-1",
+          "type": "officer",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "107"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "122"
+        },
+        {
+          "id": "green1-officer-1",
+          "type": "officer",
+          "color": "green1",
+          "nodeId": "115"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "5935033342762625220",
+          "type": "capture"
+        }
+      ],
+      "correctMoves": [
+        "5935033342762625220"
+      ],
+      "hint": "Move your King forward as the first step of the combination. Complete the sequence by following the blue highlights.",
+      "hintsProgressive": [
+        "Begin the combination: move your King forward to node 110 or 111.",
+        "This is a 3-move King + Officer coordination. Your King goes first, establishing the threat.",
+        "Move your King to node 111, establish the threat, and the Officer will provide support."
+      ],
+      "mistakeFeedback": "Start the combination by moving your King to node 110 or 111. The best combinations begin with bold King positioning.",
+      "mistakes_to_avoid": [
+        {
+          "nodeId": "96",
+          "explanation": "Don't move a Warrior in this combination. Your King + Officer are the dynamic duo here. Move the King."
+        },
+        {
+          "nodeId": "98",
+          "explanation": "Focus on the King + Officer combo. Initiating with a Warrior ruins the tactical sequence."
+        }
+      ],
+      "explanationLevels": {
+        "simple": "Great tactics require combining pieces. King + Officer together create threats neither can alone.",
+        "detailed": "This is the essence of advanced ProChess: understanding piece synergy. Your King moves boldly because your Officer provides support. Your Officer positions aggressively because your King exerts nearby pressure. Together, they create tactical situations where the opponent is trapped between threats. Single pieces are limited; coordinated pieces are devastating. Master players don't think about one piece at a time—they think about armies, combinations, and forcing sequences that opponent cannot counter."
+      },
+      "animation_hints": {
+        "delay_ms": 200,
+        "move_duration_ms": 800,
+        "auto_advance_ms": 4000
+      }
+    }
+  ]
+}

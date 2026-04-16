@@ -1,0 +1,41 @@
+{
+  "id": "beginner-new-game-setup",
+  "title": "New Game Setup",
+  "description": "Practice the standard opening with all pieces and colors in their official starting positions.",
+  "difficulty": "beginner",
+  "estimatedTime": 8,
+  "steps": [
+    {
+      "stepId": 1,
+      "title": "Standard Opening",
+      "instruction": "Review the board: all pieces are in their starting positions. Play the first move as red.",
+      "explanation": "This is the official starting position for a new game.",
+      "position": [
+        { "id": "red1-king", "type": "king", "color": "red1", "nodeId": "100" },
+        { "id": "red1-vizier", "type": "vizier", "color": "red1", "nodeId": "96" },
+        { "id": "red1-castle", "type": "castle", "color": "red1", "nodeId": "98" },
+        { "id": "red1-officer", "type": "officer", "color": "red1", "nodeId": "99" },
+        { "id": "red1-horse", "type": "horse", "color": "red1", "nodeId": "97" },
+        { "id": "red1-warrior-1", "type": "warrior", "color": "red1", "nodeId": "101" },
+        { "id": "red1-warrior-2", "type": "warrior", "color": "red1", "nodeId": "102" },
+        { "id": "yellow1-king", "type": "king", "color": "yellow1", "nodeId": "112" },
+        { "id": "yellow1-vizier", "type": "vizier", "color": "yellow1", "nodeId": "108" },
+        { "id": "yellow1-castle", "type": "castle", "color": "yellow1", "nodeId": "110" },
+        { "id": "yellow1-officer", "type": "officer", "color": "yellow1", "nodeId": "111" },
+        { "id": "yellow1-horse", "type": "horse", "color": "yellow1", "nodeId": "109" },
+        { "id": "yellow1-warrior-1", "type": "warrior", "color": "yellow1", "nodeId": "113" },
+        { "id": "yellow1-warrior-2", "type": "warrior", "color": "yellow1", "nodeId": "114" },
+        { "id": "green1-king", "type": "king", "color": "green1", "nodeId": "124" },
+        { "id": "green1-vizier", "type": "vizier", "color": "green1", "nodeId": "120" },
+        { "id": "green1-castle", "type": "castle", "color": "green1", "nodeId": "122" },
+        { "id": "green1-officer", "type": "officer", "color": "green1", "nodeId": "123" },
+        { "id": "green1-horse", "type": "horse", "color": "green1", "nodeId": "121" },
+        { "id": "green1-warrior-1", "type": "warrior", "color": "green1", "nodeId": "125" },
+        { "id": "green1-warrior-2", "type": "warrior", "color": "green1", "nodeId": "126" }
+      ],
+      "highlightedNodes": [],
+      "correctMoves": ["101", "102", "103", "104", "105"],
+      "expectedColor": "red1"
+    }
+  ]
+}

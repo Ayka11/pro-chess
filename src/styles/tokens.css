@@ -1,0 +1,76 @@
+/*
+  ProChess Premium UI/UX Design Tokens
+  -----------------------------------
+  Centralized CSS variables for color, typography, spacing, radii, z-index, and gradients.
+  Import this file in your main entry (e.g., main.ts or App.vue/tsx).
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* Core Colors */
+  --cyan-primary: #00d4ff;
+  --cyan-deep: #278dff;
+  --gold-primary: #f4c95d;
+  --gold-soft: #e8b94b;
+  --void-black: #0a0a0f;
+  --void-900: #12121a;
+  --void-800: #1a1a25;
+  --void-700: #252532;
+  --sector-red: #ff4757;
+  --sector-green: #2ed573;
+  --sector-yellow: #ffa502;
+  --neutral-white: #f8f9fa;
+  --engagement-blue: #00d4ff;
+
+  /* Gradients & Effects */
+  --glass-panel: linear-gradient(135deg, rgba(18, 18, 26, 0.85) 0%, rgba(26, 26, 37, 0.6) 50%, rgba(18, 18, 26, 0.9) 100%);
+  --inner-glow: inset 0 1px 1px rgba(255, 255, 255, 0.08), inset 0 -1px 1px rgba(0, 0, 0, 0.3);
+  --cyan-glow: 0 0 20px rgba(0, 212, 255, 0.3), 0 0 40px rgba(0, 212, 255, 0.1);
+
+  /* Typography */
+  --font-display: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.5rem;
+  --text-5xl: 4rem;
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.05em;
+  --tracking-wider: 0.1em;
+  --tracking-widest: 0.2em;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-8: 48px;
+  --space-10: 64px;
+  --space-12: 80px;
+  --space-16: 128px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+
+  /* Z-Index */
+  --z-background: 0;
+  --z-board: 10;
+  --z-pieces: 20;
+  --z-ui: 100;
+  --z-modal: 200;
+  --z-tooltip: 300;
+}

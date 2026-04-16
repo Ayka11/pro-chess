@@ -1,0 +1,93 @@
+{
+  "id": "08-king-safety",
+  "title": "King Safety and Dulling the Horn",
+  "description": "Learn how to protect your King and deliver checkmate.",
+  "difficulty": "intermediate",
+  "estimatedTime": 9,
+  "steps": [
+    {
+      "stepId": 1,
+      "title": "King Movement",
+      "instruction": "Move your King to a safe square.",
+      "explanation": "The King can move to any adjacent triangle and ignores the Area Barrier when capturing.",
+      "position": [
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "101"
+        },
+        {
+          "id": "red1-officer-1",
+          "type": "officer",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "120"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "8954689471450390286",
+          "type": "move"
+        }
+      ],
+      "correctMoves": [
+        "8954689471450390286"
+      ],
+      "teaching_moment": "Keep your King away from the main conflict zone unless you are attacking."
+    },
+    {
+      "stepId": 2,
+      "title": "Checkmate (Dulling the Horn)",
+      "instruction": "Attack the enemy King so it has no safe moves.",
+      "explanation": "If the King is attacked and has no escape, the Horn is Dulled — Checkmate!",
+      "position": [
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "106"
+        },
+        {
+          "id": "red1-officer-1",
+          "type": "officer",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "120"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "4306432181167338537",
+          "type": "capture"
+        }
+      ],
+      "correctMoves": [
+        "4306432181167338537"
+      ],
+      "strategic_context": "Use your Officers and Castles to restrict the enemy King's movement."
+    }
+  ]
+}

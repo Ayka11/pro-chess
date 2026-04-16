@@ -1,0 +1,111 @@
+/*
+  ProChess Premium UI/UX HUD Top Bar Styles
+  ----------------------------------------
+  Styles for the in-game HUD top bar and player cards.
+  Import after tokens.css and glass.css.
+*/
+
+.hud-top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 72px;
+  background: var(--glass-panel);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 32px;
+  z-index: var(--z-ui);
+}
+
+.player-hud {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  background: rgba(10, 10, 15, 0.6);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255,255,255,0.08);
+  min-width: 200px;
+}
+
+.player-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-primary);
+  box-shadow: 0 0 15px rgba(244,201,93,0.3);
+  position: relative;
+}
+.player-avatar.active-turn::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--cyan-primary);
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+.player-info {
+  display: flex;
+  flex-direction: column;
+}
+.player-name {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  color: #fff;
+  font-weight: 600;
+}
+.piece-count {
+  font-size: var(--text-xs);
+  color: var(--gold-primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.piece-count::before {
+  content: '♟';
+  font-size: var(--text-sm);
+}
+
+.timer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.turn-indicator {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  color: var(--cyan-primary);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.timers {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 8px 24px;
+  background: rgba(0,0,0,0.4);
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(0,212,255,0.2);
+}
+.timer {
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0,212,255,0.5);
+}
+.timer.warning {
+  color: var(--sector-red);
+  animation: pulse 1s ease-in-out infinite;
+}
+.timer-divider {
+  width: 1px;
+  height: 24px;
+  background: linear-gradient(to bottom, transparent, var(--gold-primary), transparent);
+}

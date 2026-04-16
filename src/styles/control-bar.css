@@ -1,0 +1,48 @@
+/*
+  ProChess Premium UI/UX Control Bar Styles
+  ----------------------------------------
+  Styles for the in-game bottom control bar and buttons.
+  Import after tokens.css and glass.css.
+*/
+
+.control-bar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  padding: 12px;
+  background: rgba(18,18,26,0.8);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  z-index: var(--z-ui);
+}
+
+.control-btn {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: var(--radius-lg);
+  color: rgba(255,255,255,0.7);
+  font-size: 1.25rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.control-btn:hover {
+  background: rgba(0,212,255,0.1);
+  border-color: rgba(0,212,255,0.3);
+  color: var(--cyan-primary);
+  transform: translateY(-2px);
+}
+.control-btn.primary {
+  background: rgba(0,212,255,0.15);
+  border-color: rgba(0,212,255,0.4);
+  color: var(--cyan-primary);
+}

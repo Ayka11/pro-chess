@@ -1,0 +1,51 @@
+{
+  "id": "07-10-capture-threat",
+  "title": "The 10-Capture Rule",
+  "description": "Understand how to win by capturing 10 enemy pieces.",
+  "difficulty": "intermediate",
+  "estimatedTime": 7,
+  "steps": [
+    {
+      "stepId": 1,
+      "title": "Capture Pressure",
+      "instruction": "Capture the enemy piece to increase your counter.",
+      "explanation": "Every successful capture brings you closer to victory.",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "101"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "105"
+        },
+        {
+          "id": "red1-officer-1",
+          "type": "officer",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "8954689471450390286",
+          "type": "capture"
+        }
+      ],
+      "correctMoves": [
+        "8954689471450390286"
+      ],
+      "teaching_moment": "Reaching 10 captures wins the game instantly — even if the King is still on the board."
+    }
+  ]
+}

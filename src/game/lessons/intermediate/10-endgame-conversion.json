@@ -1,0 +1,93 @@
+{
+  "id": "10-endgame-conversion",
+  "title": "Endgame Conversion",
+  "description": "How to win when few pieces remain",
+  "difficulty": "intermediate",
+  "estimatedTime": 12,
+  "steps": [
+    {
+      "stepId": 1,
+      "title": "King Activation",
+      "instruction": "Bring your King into the Conflict Zone",
+      "explanation": "In endgames, the King becomes a powerful attacking piece.",
+      "position": [
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "101"
+        },
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "103"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "105"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "8954689471450390286",
+          "type": "move"
+        }
+      ],
+      "correctMoves": [
+        "8954689471450390286"
+      ],
+      "teaching_moment": "The King is strongest when active inside the blue zone."
+    },
+    {
+      "stepId": 2,
+      "title": "Forcing the 10th Capture",
+      "instruction": "Set up a position to reach 10 captures",
+      "explanation": "Even with few pieces left, coordinated attacks can force the win.",
+      "position": [
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "104"
+        },
+        {
+          "id": "red1-officer-1",
+          "type": "officer",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "105"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "124"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "7475480187108796015",
+          "type": "capture"
+        }
+      ],
+      "correctMoves": [
+        "7475480187108796015"
+      ],
+      "strategic_context": "Focus on trading your remaining pieces for enemy ones to hit the 10-capture limit."
+    }
+  ]
+}

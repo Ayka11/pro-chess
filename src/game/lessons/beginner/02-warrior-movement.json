@@ -1,0 +1,283 @@
+{
+  "id": "beginner-warrior-movement",
+  "title": "Mastering Warrior Movement",
+  "description": "Warriors are your fundamental pieces. Learn how to move them effectively and recognize their attack patterns.",
+  "difficulty": "beginner",
+  "estimatedTime": 4,
+  "steps": [
+    {
+      "stepId": 1,
+      "title": "Select a Warrior",
+      "instruction": "Select any of your Warriors on the board. Warriors are important for controlling space and making early attacks.",
+      "explanation": "Good! You've selected a Warrior. Warriors can move to any of the 6 adjacent triangles. Let's explore their movement options.",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "red1-warrior-3",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "104"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "140"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "142"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "110"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "150"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "100",
+          "type": "strategic"
+        },
+        {
+          "nodeId": "102",
+          "type": "strategic"
+        },
+        {
+          "nodeId": "104",
+          "type": "strategic"
+        }
+      ],
+      "correctMoves": [
+        "100",
+        "102",
+        "104"
+      ],
+      "hint": "Pick any Warrior - they're all equally skilled at moving and attacking.",
+      "mistakeFeedback": "Select one of your Warriors to continue."
+    },
+    {
+      "stepId": 2,
+      "title": "Explore Legal Moves",
+      "instruction": "Look at all the green-highlighted squares. These are all legal moves for your Warrior. Each hexagonal triangle connects to 6 neighbors.",
+      "explanation": "Perfect! Warriors can reach any of these 6 adjacent triangles in a single move. This flexibility makes them excellent for quick attacks and defense.",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "100"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "red1-warrior-3",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "104"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "140"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "142"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "110"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "150"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "99",
+          "type": "move"
+        },
+        {
+          "nodeId": "101",
+          "type": "move"
+        },
+        {
+          "nodeId": "103",
+          "type": "move"
+        },
+        {
+          "nodeId": "105",
+          "type": "move"
+        },
+        {
+          "nodeId": "107",
+          "type": "move"
+        },
+        {
+          "nodeId": "109",
+          "type": "move"
+        }
+      ],
+      "correctMoves": [
+        "2601875652598059360"
+      ],
+      "hint": "Pick any of the green-highlighted moves. Warriors are fast and nimble!",
+      "mistakeFeedback": "Move to one of the green-highlighted squares."
+    },
+    {
+      "stepId": 3,
+      "title": "Control Territory",
+      "instruction": "Move closer to the center engagement zone. This is where the real battle happens - control the center for victory!",
+      "explanation": "Excellent positioning! The center engagement zone is the heart of ProChess strategy. Players fight for control here because the center gives you options and pressure.",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "103"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "red1-warrior-3",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "104"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "140"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "142"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "110"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "150"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "7591666522544083384",
+          "type": "move"
+        }
+      ],
+      "correctMoves": [
+        "7591666522544083384"
+      ],
+      "hint": "Move toward the center of the board - that's where the action is!",
+      "mistakeFeedback": "Try moving closer to the engagement zone in the center."
+    },
+    {
+      "stepId": 4,
+      "title": "Lesson Complete!",
+      "instruction": "Great job learning Warrior movement! Warriors are the foundation of ProChess tactics. Keep practicing their positioning to master the game.",
+      "explanation": "You've learned the essentials of Warrior movement. These fast, flexible pieces are your tools for controlling board position and attacking enemies. Combined with the Area Barrier rule, Warriors become strategic weapons for tactical play.",
+      "position": [
+        {
+          "id": "red1-warrior-1",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "111"
+        },
+        {
+          "id": "red1-warrior-2",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "102"
+        },
+        {
+          "id": "red1-warrior-3",
+          "type": "warrior",
+          "color": "red1",
+          "nodeId": "104"
+        },
+        {
+          "id": "green1-warrior-1",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "140"
+        },
+        {
+          "id": "green1-warrior-2",
+          "type": "warrior",
+          "color": "green1",
+          "nodeId": "142"
+        },
+        {
+          "id": "red1-king-1",
+          "type": "king",
+          "color": "red1",
+          "nodeId": "110"
+        },
+        {
+          "id": "green1-king-1",
+          "type": "king",
+          "color": "green1",
+          "nodeId": "150"
+        }
+      ],
+      "highlightedNodes": [
+        {
+          "nodeId": "7610891435485515776",
+          "type": "move"
+        }
+      ],
+      "correctMoves": [
+        "7610891435485515776"
+      ],
+      "hint": "Click on your Warrior to confirm completion of this lesson.",
+      "mistakeFeedback": "Click on your Warrior to complete this lesson."
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "id": "06-zone-control",
+  "title": "The Gateway to the Horn",
+  "description": "Navigating the Blue Conflict Zone and the Area Barrier.",
+  "difficulty": "intermediate",
+  "estimatedTime": 10,
+  "steps": [
+    {
+      "stepId": 1,
+      "title": "Step Into the Blue",
+      "instruction": "Move your Warrior into the blue Conflict Zone.",
+      "explanation": "Entering the Conflict Zone changes the game from quiet movement into direct combat pressure.",
+      "position": [
+        { "id": "red1-warrior-1", "type": "warrior", "color": "red1", "nodeId": "32297207791097963" },
+        { "id": "red1-king-1", "type": "king", "color": "red1", "nodeId": "2619247096430071974" },
+        { "id": "green1-warrior-1", "type": "warrior", "color": "green1", "nodeId": "2762183366116166143" },
+        { "id": "green1-king-1", "type": "king", "color": "green1", "nodeId": "3140820121316779077" }
+      ],
+      "highlightedNodes": [
+        { "nodeId": "8174236144204015081", "type": "move" }
+      ],
+      "correctMoves": ["8174236144204015081"],
+      "hint": "Advance your Warrior into the blue zone.",
+      "mistakeFeedback": "Move to the highlighted blue square inside the Conflict Zone.",
+      "strategic_context": "The center is where pressure builds. Once you enter it, every move becomes tactical."
+    },
+    {
+      "stepId": 2,
+      "title": "Check the Color Code",
+      "instruction": "Select the Warrior standing on the colored triangle.",
+      "explanation": "Inside the Conflict Zone, you must always notice the triangle type first. Combat is color-coded by area type.",
+      "position": [
+        { "id": "red1-warrior-1", "type": "warrior", "color": "red1", "nodeId": "109654421216589212" },
+        { "id": "red1-warrior-2", "type": "warrior", "color": "red1", "nodeId": "2019721353812775838" },
+        { "id": "red1-king-1", "type": "king", "color": "red1", "nodeId": "2619247096430071974" },
+        { "id": "green1-warrior-1", "type": "warrior", "color": "green1", "nodeId": "2762183366116166143" },
+        { "id": "green1-king-1", "type": "king", "color": "green1", "nodeId": "3140820121316779077" }
+      ],
+      "highlightedNodes": [
+        { "nodeId": "109654421216589212", "type": "strategic" }
+      ],
+      "correctMoves": ["109654421216589212"],
+      "hint": "Click the highlighted red Warrior.",
+      "mistakeFeedback": "Select the Warrior on the colored triangle to continue."
+    },
+    {
+      "stepId": 3,
+      "title": "Strike the Same",
+      "instruction": "Capture the enemy piece that shares your area type.",
+      "explanation": "Captures only work when both pieces are in the same area type. The gray shadow shows a piece that is in range but protected by the Area Barrier.",
+      "position": [
+        { "id": "red1-warrior-1", "type": "warrior", "color": "red1", "nodeId": "109654421216589212" },
+        { "id": "green1-warrior-1", "type": "warrior", "color": "green1", "nodeId": "837021296214811440" },
+        { "id": "green1-warrior-2", "type": "warrior", "color": "green1", "nodeId": "2599610230313390701" },
+        { "id": "red1-king-1", "type": "king", "color": "red1", "nodeId": "2619247096430071974" },
+        { "id": "green1-king-1", "type": "king", "color": "green1", "nodeId": "3140820121316779077" }
+      ],
+      "highlightedNodes": [
+        { "nodeId": "837021296214811440", "type": "capture" },
+        { "nodeId": "2599610230313390701", "type": "blocked" }
+      ],
+      "correctMoves": ["837021296214811440"],
+      "hint": "Take the red capture, not the gray shadow.",
+      "mistakeFeedback": "Only the capture target inside the same area type is legal."
+    },
+    {
+      "stepId": 4,
+      "title": "The King's Exception",
+      "instruction": "Move your King across the barrier.",
+      "explanation": "The King is the exception. It can cross the barrier when other pieces are trapped by it.",
+      "position": [
+        { "id": "red1-king-1", "type": "king", "color": "red1", "nodeId": "32297207791097963" },
+        { "id": "red1-warrior-1", "type": "warrior", "color": "red1", "nodeId": "109654421216589212" },
+        { "id": "green1-warrior-1", "type": "warrior", "color": "green1", "nodeId": "2762183366116166143" },
+        { "id": "green1-king-1", "type": "king", "color": "green1", "nodeId": "3140820121316779077" }
+      ],
+      "highlightedNodes": [
+        { "nodeId": "8174236144204015081", "type": "move" }
+      ],
+      "correctMoves": ["8174236144204015081"],
+      "hint": "Let the King cross where the Warrior cannot.",
+      "mistakeFeedback": "Move the King to the highlighted square across the barrier."
+    },
+    {
+      "stepId": 5,
+      "title": "Count to Ten",
+      "instruction": "Every successful strike brings you closer to victory. Capture another piece.",
+      "explanation": "Each capture advances your count toward ten. When you reach ten captures, the game is yours.",
+      "position": [
+        { "id": "red1-officer-1", "type": "officer", "color": "red1", "nodeId": "2507843582148884223" },
+        { "id": "red1-warrior-1", "type": "warrior", "color": "red1", "nodeId": "2019721353812775838" },
+        { "id": "green1-warrior-1", "type": "warrior", "color": "green1", "nodeId": "2762183366116166143" },
+        { "id": "green1-king-1", "type": "king", "color": "green1", "nodeId": "3140820121316779077" }
+      ],
+      "highlightedNodes": [
+        { "nodeId": "2762183366116166143", "type": "capture" }
+      ],
+      "correctMoves": ["2762183366116166143"],
+      "hint": "Capture the highlighted enemy to increase your tally.",
+      "mistakeFeedback": "Look for the legal capture that advances your total."
+    }
+  ]
+}

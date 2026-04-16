@@ -1,0 +1,24 @@
+/*
+  ProChess Premium UI/UX Engagement Zone CSS Fallback
+  --------------------------------------------------
+  For UI overlays and non-WebGL fallback.
+*/
+
+.engagement-zone-ui {
+  position: absolute;
+  pointer-events: none;
+}
+.zone-border {
+  stroke: var(--cyan-primary);
+  stroke-width: 3;
+  fill: none;
+  filter: drop-shadow(0 0 8px rgba(0,212,255,0.6));
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 20 10;
+  animation: zone-flow 3s linear infinite;
+}
+.zone-glow {
+  fill: rgba(0,212,255,0.03);
+  filter: blur(20px);
+}
