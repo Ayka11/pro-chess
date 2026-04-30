@@ -164,15 +164,9 @@ export class TrainingEngine {
       }
     }
 
-    // Stricter enforcement: check withWhiteButton
-    if (step.withWhiteButton) {
-      // Assume gameState or board exposes a method to check if white button was pressed
-      // Replace this with actual logic as needed
-      if (!this.board.isWhiteButtonActive?.()) {
-        this.onMistake?.("You must use the white button for this move.");
-        return { success: false, message: "You must use the white button for this move." };
-      }
-    }
+    // `withWhiteButton` is currently instructional metadata. The board has no
+    // white-button input state yet, so color and target validation remain the
+    // enforceable checks for these lesson steps.
 
     if (step.correctMoves.includes(toNodeId)) {
       // Success!

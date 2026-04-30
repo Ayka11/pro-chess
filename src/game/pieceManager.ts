@@ -192,7 +192,7 @@ export class PieceManager {
     const action = mixer.clipAction(targetClip);
     action.reset();
     action.clampWhenFinished = true;
-    action.setLoop(loop ? THREE.LoopRepeat : THREE.LoopOnce);
+    action.setLoop(loop ? THREE.LoopRepeat : THREE.LoopOnce, loop ? Infinity : 1);
     action.fadeIn(fadeTime);
     action.play();
 
