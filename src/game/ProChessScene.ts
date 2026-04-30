@@ -48,6 +48,7 @@ export class ProChessScene extends Phaser.Scene {
     intermediate: 0,
     advanced: 0
   };
+  private trainingSelectedDifficulty: "beginner" | "intermediate" | "advanced" = "beginner";
   private settingsState = {
     music: true,
     sfx: true,
@@ -275,43 +276,140 @@ export class ProChessScene extends Phaser.Scene {
   }
 
   private createUiLayers(): void {
-    // Simple classic menu: flat background, centered title, grid of buttons
-    const menuBg = this.add.rectangle(680, 430, 1360, 860, 0x181c22, 1).setDepth(230);
+    const menuItems: Phaser.GameObjects.GameObject[] = [];
+    const menuBg = this.add.rectangle(680, 430, 1360, 860, 0x0f0c29, 1).setDepth(230);
+    menuItems.push(menuBg);
+
+    const aura = this.add.graphics().setDepth(231);
+    aura.fillStyle(0x1a1a2e, 0.96);
+    aura.fillCircle(680, 430, 660);
+    aura.fillStyle(0x00f2ff, 0.08);
+    aura.fillCircle(520, 320, 250);
+    aura.fillStyle(0xbb00ff, 0.08);
+    aura.fillCircle(860, 260, 210);
+    aura.fillStyle(0xffd700, 0.06);
+    aura.fillCircle(740, 680, 270);
+    menuItems.push(aura);
+
+    const scanGrid = this.add.graphics().setDepth(232);
+    scanGrid.lineStyle(1, 0xffffff, 0.045);
+    for (let x = 140; x <= 1220; x += 72) {
+      scanGrid.lineBetween(x, 90, x, 800);
+    }
+    for (let y = 110; y <= 780; y += 72) {
+      scanGrid.lineBetween(100, y, 1260, y);
+    }
+    menuItems.push(scanGrid);
+
     const title = this.add
-      .text(680, 200, "PROCHESS", {
-        fontFamily: this.theme.fontSerif,
-        fontSize: "54px",
-        color: this.theme.hudText,
+      .text(680, 126, "PROCHESS", {
+        fontFamily: "Georgia, 'Times New Roman', serif",
+        fontSize: "58px",
+        color: "#ffffff",
+        fontStyle: "bold"
+      })
+      .setOrigin(0.5)
+      .setDepth(240)
+      .setShadow(0, 0, "#ffffff", 22, true, true);
+    title.setLetterSpacing(10);
+    menuItems.push(title);
+
+    const subtitle = this.add
+      .text(680, 176, "TACTICAL HEX WARFARE", {
+        fontFamily: this.theme.fontUI,
+        fontSize: "13px",
+        color: "#7ff8ff",
         fontStyle: "bold"
       })
       .setOrigin(0.5)
       .setDepth(240);
-    // Simple grid of flat buttons
-    const buttonLabels = [
-      { label: "Battle", y: 320, action: () => this.startBattle() },
-      { label: "Tournament", y: 390, action: () => this.openMenuPage("Tournament") },
-      { label: "Training", y: 460, action: () => this.openMenuPage("Training") },
-      { label: "Profile", y: 530, action: () => this.openMenuPage("Profile") },
-      { label: "Leaderboard", y: 600, action: () => this.openMenuPage("Leaderboard") },
-      { label: "Settings", y: 670, action: () => this.openMenuPage("Settings") },
-      { label: "Others", y: 740, action: () => this.openMenuPage("Others") }
-    ];
-    const buttons = buttonLabels.map((b, i) => {
-      const btn = this.add.rectangle(680, b.y, 320, 54, this.theme.button, 1)
-        .setStrokeStyle(2, this.theme.buttonStroke, 0.7)
-        .setInteractive({ useHandCursor: true })
-        .on("pointerdown", b.action)
-        .setDepth(231);
-      const txt = this.add.text(680, b.y, b.label.toUpperCase(), {
+    subtitle.setLetterSpacing(5);
+    menuItems.push(subtitle);
+
+    const makeNeonCard = (
+      x: number,
+      y: number,
+      width: number,
+      height: number,
+      label: string,
+      icon: string,
+      accent: number,
+      accentText: string,
+      action: () => void,
+      hero = false
+    ): Phaser.GameObjects.Container => {
+      const card = this.add.container(x, y).setDepth(240);
+      const glow = this.add.rectangle(0, 0, width + 10, height + 10, accent, hero ? 0.16 : 0.08);
+      const panel = this.add.rectangle(0, 0, width, height, 0xffffff, hero ? 0.07 : 0.05)
+        .setStrokeStyle(hero ? 2.5 : 1.5, accent, hero ? 0.68 : 0.36)
+        .setInteractive({ useHandCursor: true });
+      const glyph = this.add.text(0, hero ? -30 : -22, icon, {
         fontFamily: this.theme.fontUI,
-        fontSize: "22px",
-        color: this.theme.hudText,
+        fontSize: hero ? "54px" : "33px",
+        color: accentText,
         fontStyle: "bold"
-      }).setOrigin(0.5).setDepth(232);
-      return [btn, txt];
-    }).flat();
+      }).setOrigin(0.5).setShadow(0, 0, accentText, 10, true, true);
+      const text = this.add.text(0, hero ? 42 : 26, label, {
+        fontFamily: this.theme.fontUI,
+        fontSize: hero ? "30px" : "16px",
+        color: hero ? accentText : "#ffffff",
+        fontStyle: "bold"
+      }).setOrigin(0.5);
+      text.setLetterSpacing(hero ? 3 : 2);
+
+      panel
+        .on("pointerover", () => {
+          panel.setFillStyle(0xffffff, hero ? 0.11 : 0.09);
+          panel.setStrokeStyle(hero ? 3 : 2, accent, 0.9);
+          this.tweens.add({ targets: card, y: y - 8, duration: 180, ease: "Back.out" });
+          this.tweens.add({ targets: glow, alpha: hero ? 0.38 : 0.22, duration: 180, ease: "Quad.out" });
+        })
+        .on("pointerout", () => {
+          panel.setFillStyle(0xffffff, hero ? 0.07 : 0.05);
+          panel.setStrokeStyle(hero ? 2.5 : 1.5, accent, hero ? 0.68 : 0.36);
+          this.tweens.add({ targets: card, y, duration: 150, ease: "Quad.out" });
+          this.tweens.add({ targets: glow, alpha: hero ? 0.16 : 0.08, duration: 150, ease: "Quad.out" });
+        })
+        .on("pointerdown", () => {
+          this.tweens.add({ targets: card, scaleX: 0.98, scaleY: 0.98, yoyo: true, duration: 90, ease: "Quad.out" });
+          action();
+        });
+
+      card.add([glow, panel, glyph, text]);
+      return card;
+    };
+
+    const cardW = 210;
+    const cardH = 145;
+    const gap = 24;
+    const startX = 230;
+    const topY = 290;
+    const battleW = cardW * 2 + gap;
+    const battleH = cardH * 2 + gap;
+    const cards = [
+      makeNeonCard(startX + battleW / 2, topY + battleH / 2, battleW, battleH, "BATTLE", "X", 0x00f2ff, "#00f2ff", () => this.startBattle(), true),
+      makeNeonCard(startX + battleW + gap + cardW / 2, topY + cardH / 2, cardW, cardH, "TOURNAMENT", "CUP", 0xffd700, "#ffd700", () => this.openMenuPage("Tournament")),
+      makeNeonCard(startX + battleW + gap * 2 + cardW * 1.5, topY + cardH / 2, cardW, cardH, "TRAINING", "OK", 0x00ff88, "#00ff88", () => this.openMenuPage("Training")),
+      makeNeonCard(startX + battleW + gap + cardW / 2, topY + cardH + gap + cardH / 2, cardW, cardH, "PROFILE", "ID", 0x0099ff, "#45b7ff", () => this.openMenuPage("Profile")),
+      makeNeonCard(startX + battleW + gap * 2 + cardW * 1.5, topY + cardH + gap + cardH / 2, cardW, cardH, "LEADERBOARD", "BAR", 0xff8800, "#ffad33", () => this.openMenuPage("Leaderboard")),
+      makeNeonCard(startX + cardW / 2, topY + battleH + gap + cardH / 2, cardW, cardH, "SETTINGS", "GEAR", 0xff4444, "#ff6666", () => this.openMenuPage("Settings")),
+      makeNeonCard(startX + cardW + gap + cardW / 2, topY + battleH + gap + cardH / 2, cardW, cardH, "OTHERS", "+", 0xbb00ff, "#cf55ff", () => this.openMenuPage("Others"))
+    ];
+    menuItems.push(...cards);
+
+    const footer = this.add
+      .text(680, 794, "Choose your arena. Win the center. Rewrite the board.", {
+        fontFamily: this.theme.fontUI,
+        fontSize: "14px",
+        color: "#8aa7bd"
+      })
+      .setOrigin(0.5)
+      .setDepth(240);
+    footer.setLetterSpacing(1);
+    menuItems.push(footer);
+
     this.menuLayer = this.add
-      .container(0, 0, [menuBg, title, ...buttons])
+      .container(0, 0, menuItems)
       .setDepth(230)
       .setScrollFactor(0);
 
@@ -340,7 +438,7 @@ export class ProChessScene extends Phaser.Scene {
 
     // Initialize page layer container
     this.pageLayer = this.add
-      .container(0, 0, [this.pageTitleText, this.pageChromeLayer, this.pageContentLayer])
+      .container(0, 0, [this.pageChromeLayer, this.pageContentLayer, this.pageTitleText])
       .setDepth(220)
       .setScrollFactor(0)
       .setVisible(false);
@@ -937,7 +1035,16 @@ export class ProChessScene extends Phaser.Scene {
     this.pageCurrentName = pageName;
     this.pageScrollY = 0;
     this.pageScrollMax = 0;
+    if (pageName === "Training") {
+      this.trainingSelectedDifficulty = "beginner";
+    }
     this.pageTitleText.setText(pageName);
+    this.pageTitleText
+      .setPosition(this.scale.width * 0.5, this.getPageFrame().top + 58)
+      .setColor(this.getPageAccent(pageName).text)
+      .setFontSize(42)
+      .setShadow(0, 0, this.getPageAccent(pageName).text, 16, true, true);
+    this.pageTitleText.setLetterSpacing(5);
     this.renderPageContent(pageName);
     this.pageLayer.setVisible(true);
     this.refreshLayerVisibility();
@@ -953,8 +1060,10 @@ export class ProChessScene extends Phaser.Scene {
 
   private renderPageContent(pageName: string): void {
     if (!this.pageContentLayer) return;
+    this.pageContentLayer.clearMask(true);
     this.pageContentLayer.removeAll(true);
     this.pageChromeLayer?.removeAll(true);
+    this.renderPageShell(pageName);
     switch (pageName) {
       case "Profile":
         this.renderProfilePage();
@@ -980,6 +1089,71 @@ export class ProChessScene extends Phaser.Scene {
     this.syncPageScrollOffset();
   }
 
+  private getPageAccent(pageName: string): { color: number; text: string; label: string } {
+    switch (pageName) {
+      case "Tournament":
+        return { color: 0xffd700, text: "#ffd700", label: "CUP" };
+      case "Training":
+        return { color: 0x00ff88, text: "#00ff88", label: "OK" };
+      case "Profile":
+        return { color: 0x0099ff, text: "#45b7ff", label: "ID" };
+      case "Leaderboard":
+        return { color: 0xff8800, text: "#ffad33", label: "BAR" };
+      case "Settings":
+        return { color: 0xff4444, text: "#ff6666", label: "GEAR" };
+      case "Others":
+        return { color: 0xbb00ff, text: "#cf55ff", label: "+" };
+      default:
+        return { color: 0x00f2ff, text: "#00f2ff", label: "X" };
+    }
+  }
+
+  private renderPageShell(pageName: string): void {
+    if (!this.pageChromeLayer) return;
+    const frame = this.getPageFrame();
+    const contentBounds = this.getPageContentBounds();
+    const accent = this.getPageAccent(pageName);
+
+    const dimmer = this.add.rectangle(this.scale.width * 0.5, this.scale.height * 0.5, this.scale.width, this.scale.height, 0x050510, 0.72)
+      .setInteractive();
+    const aura = this.add.graphics();
+    aura.fillStyle(0x1a1a2e, 0.84);
+    aura.fillRoundedRect(frame.left, frame.top, frame.width, frame.height, 28);
+    aura.fillStyle(accent.color, 0.09);
+    aura.fillCircle(frame.left + 120, frame.top + 110, 190);
+    aura.fillStyle(0xffffff, 0.035);
+    aura.fillCircle(frame.right - 130, frame.bottom - 110, 240);
+    const frameStroke = this.add.rectangle(frame.centerX, frame.centerY, frame.width, frame.height, 0xffffff, 0.045)
+      .setStrokeStyle(2, accent.color, 0.58);
+    const titleRule = this.add.rectangle(frame.centerX, frame.top + 96, frame.width - 70, 1, accent.color, 0.34);
+    const iconPlate = this.add.rectangle(frame.left + 62, frame.top + 58, 58, 42, accent.color, 0.13)
+      .setStrokeStyle(1.2, accent.color, 0.72);
+    const iconText = this.add.text(frame.left + 62, frame.top + 58, accent.label, {
+      fontFamily: this.theme.fontUI,
+      fontSize: "15px",
+      color: accent.text,
+      fontStyle: "bold"
+    }).setOrigin(0.5).setShadow(0, 0, accent.text, 8, true, true);
+    const closeBg = this.add.rectangle(frame.right - 62, frame.top + 58, 58, 42, 0xffffff, 0.055)
+      .setStrokeStyle(1.2, accent.color, 0.52)
+      .setInteractive({ useHandCursor: true })
+      .on("pointerover", () => closeBg.setFillStyle(accent.color, 0.18))
+      .on("pointerout", () => closeBg.setFillStyle(0xffffff, 0.055))
+      .on("pointerdown", () => this.closeMenuPage());
+    const closeText = this.add.text(frame.right - 62, frame.top + 58, "BACK", {
+      fontFamily: this.theme.fontUI,
+      fontSize: "13px",
+      color: "#ffffff",
+      fontStyle: "bold"
+    }).setOrigin(0.5);
+    const contentMaskShape = this.add.graphics().setVisible(false);
+    contentMaskShape.fillStyle(0xffffff, 1);
+    contentMaskShape.fillRect(contentBounds.left, contentBounds.top, contentBounds.width, contentBounds.height);
+    this.pageContentLayer?.setMask(contentMaskShape.createGeometryMask());
+
+    this.pageChromeLayer.add([dimmer, aura, frameStroke, titleRule, iconPlate, iconText, closeBg, closeText, contentMaskShape]);
+  }
+
   private renderTextBlock(text: string): void {
     if (!this.pageContentLayer) return;
     const bounds = this.getPageContentBounds();
@@ -998,6 +1172,7 @@ export class ProChessScene extends Phaser.Scene {
   private renderProfilePage(): void {
     if (!this.pageContentLayer) return;
     const bounds = this.getPageContentBounds();
+    const accent = this.getPageAccent("Profile");
     const p = this.profileState;
     const splitColumns = bounds.width >= 760;
     const rowHeight = splitColumns ? 54 : 50;
@@ -1013,12 +1188,12 @@ export class ProChessScene extends Phaser.Scene {
       ["Current Streak", `${p.streak}`]
     ];
 
-    const hero = this.add.rectangle(bounds.centerX, bounds.top + 24, bounds.width, 62, 0x101a28, 0.98)
-      .setStrokeStyle(1.1, 0x456381, 0.55);
+    const hero = this.add.rectangle(bounds.centerX, bounds.top + 24, bounds.width, 62, 0xffffff, 0.055)
+      .setStrokeStyle(1.1, accent.color, 0.55);
     const heroText = this.add.text(bounds.centerX, bounds.top + 24, "Player record, rating, and current form in one responsive panel.", {
       fontFamily: this.theme.fontUI,
       fontSize: bounds.width < 720 ? "16px" : "17px",
-      color: "#cfe1f5",
+      color: "#dff4ff",
       align: "center",
       wordWrap: { width: bounds.width - 50 }
     }).setOrigin(0.5);
@@ -1030,20 +1205,20 @@ export class ProChessScene extends Phaser.Scene {
       const row = splitColumns ? i % 3 : i;
       const cardX = bounds.left + columnWidth * 0.5 + column * (columnWidth + columnGap);
       const y = sectionTop + row * rowHeight;
-      const card = this.add.rectangle(cardX, y, columnWidth, 42, 0x121b29, 0.96)
-        .setStrokeStyle(1, 0x3e5a77, 0.44);
+      const card = this.add.rectangle(cardX, y, columnWidth, 42, 0xffffff, 0.05)
+        .setStrokeStyle(1, accent.color, 0.38);
       const key = this.add
         .text(cardX - columnWidth * 0.5 + 22, y, k, {
           fontFamily: this.theme.fontUI,
           fontSize: "19px",
-          color: "#8fb2d4"
+          color: "#94d9ff"
         })
         .setOrigin(0, 0.5);
       const value = this.add
         .text(cardX + columnWidth * 0.5 - 22, y, v, {
           fontFamily: this.theme.fontUI,
           fontSize: "20px",
-          color: "#f0f7ff",
+          color: "#f6fbff",
           fontStyle: "bold"
         })
         .setOrigin(1, 0.5);
@@ -1054,6 +1229,7 @@ export class ProChessScene extends Phaser.Scene {
   private renderSettingsPage(): void {
     if (!this.pageContentLayer) return;
     const bounds = this.getPageContentBounds();
+    const accent = this.getPageAccent("Settings");
     const toggles: Array<{
       key: "music" | "sfx" | "vibration" | "hints" | "highContrast";
       label: string;
@@ -1065,12 +1241,12 @@ export class ProChessScene extends Phaser.Scene {
       { key: "highContrast", label: "High Contrast" }
     ];
 
-    const hero = this.add.rectangle(bounds.centerX, bounds.top + 22, bounds.width, 58, 0x101a28, 0.98)
-      .setStrokeStyle(1.1, 0x456381, 0.55);
+    const hero = this.add.rectangle(bounds.centerX, bounds.top + 22, bounds.width, 58, 0xffffff, 0.055)
+      .setStrokeStyle(1.1, accent.color, 0.55);
     const heroText = this.add.text(bounds.centerX, bounds.top + 22, "Toggle presentation, feedback, and accessibility settings without leaving the menu.", {
       fontFamily: this.theme.fontUI,
       fontSize: bounds.width < 720 ? "15px" : "16px",
-      color: "#cfe1f5",
+      color: "#ffe4e4",
       align: "center",
       wordWrap: { width: bounds.width - 48 }
     }).setOrigin(0.5);
@@ -1080,18 +1256,18 @@ export class ProChessScene extends Phaser.Scene {
     const rowGap = bounds.width < 720 ? 56 : 60;
     toggles.forEach((item, index) => {
       const y = rowStart + index * rowGap;
-      const row = this.add.rectangle(bounds.centerX, y, bounds.width, 46, 0x121b29, 0.96)
-        .setStrokeStyle(1, 0x3e5a77, 0.44);
+      const row = this.add.rectangle(bounds.centerX, y, bounds.width, 46, 0xffffff, 0.05)
+        .setStrokeStyle(1, accent.color, 0.34);
       const label = this.add
         .text(bounds.left + 22, y, item.label, {
           fontFamily: this.theme.fontUI,
           fontSize: "20px",
-          color: "#d8e8f9"
+          color: "#fff3f3"
         })
         .setOrigin(0, 0.5);
       const buttonBg = this.add
-        .rectangle(bounds.right - 70, y, 118, 34, 0x1b2a3a, 0.95)
-        .setStrokeStyle(1.2, 0x8cbef0, 0.8)
+        .rectangle(bounds.right - 70, y, 118, 34, accent.color, this.settingsState[item.key] ? 0.18 : 0.07)
+        .setStrokeStyle(1.2, accent.color, 0.8)
         .setInteractive({ useHandCursor: true })
         .on("pointerdown", () => {
           this.settingsState[item.key] = !this.settingsState[item.key];
@@ -1113,6 +1289,7 @@ export class ProChessScene extends Phaser.Scene {
   private renderLeaderboardPage(): void {
     if (!this.pageContentLayer) return;
     const bounds = this.getPageContentBounds();
+    const accent = this.getPageAccent("Leaderboard");
     const compact = bounds.width < 760;
     const rows = [
       ["1", "RookMaster", "1878", "214"],
@@ -1123,18 +1300,18 @@ export class ProChessScene extends Phaser.Scene {
     ];
     const headers = ["Rank", "Player", "Rating", "Wins"];
 
-    const hero = this.add.rectangle(bounds.centerX, bounds.top + 22, bounds.width, 58, 0x101a28, 0.98)
-      .setStrokeStyle(1.1, 0x456381, 0.55);
+    const hero = this.add.rectangle(bounds.centerX, bounds.top + 22, bounds.width, 58, 0xffffff, 0.055)
+      .setStrokeStyle(1.1, accent.color, 0.55);
     const heroText = this.add.text(bounds.centerX, bounds.top + 22, "Season standings with your current placement highlighted in the field.", {
       fontFamily: this.theme.fontUI,
       fontSize: compact ? "15px" : "16px",
-      color: "#cfe1f5",
+      color: "#fff0d3",
       align: "center",
       wordWrap: { width: bounds.width - 48 }
     }).setOrigin(0.5);
     const tableY = bounds.top + 92;
-    const table = this.add.rectangle(bounds.centerX, tableY + 136, bounds.width, 314, 0x121b29, 0.96)
-      .setStrokeStyle(1.1, 0x3e5a77, 0.44);
+    const table = this.add.rectangle(bounds.centerX, tableY + 136, bounds.width, 314, 0xffffff, 0.045)
+      .setStrokeStyle(1.1, accent.color, 0.44);
     const x = [
       bounds.left + 22,
       bounds.left + bounds.width * (compact ? 0.22 : 0.18),
@@ -1149,7 +1326,7 @@ export class ProChessScene extends Phaser.Scene {
           .text(x[i], tableY, h, {
             fontFamily: this.theme.fontUI,
             fontSize: compact ? "17px" : "18px",
-            color: "#8fb4d8",
+            color: "#ffcf88",
             fontStyle: "bold"
           })
           .setOrigin(0, 0.5)
@@ -1157,8 +1334,8 @@ export class ProChessScene extends Phaser.Scene {
     });
     rows.forEach((r, rowIndex) => {
       const y = tableY + 42 + rowIndex * 50;
-      const rowBg = this.add.rectangle(bounds.centerX, y, bounds.width - 26, 40, rowIndex === 3 ? 0x2a2d20 : 0x151f2d, rowIndex === 3 ? 0.42 : 0.62)
-        .setStrokeStyle(rowIndex === 3 ? 1.1 : 0.8, rowIndex === 3 ? 0xe0bf72 : 0x31475f, rowIndex === 3 ? 0.8 : 0.36);
+      const rowBg = this.add.rectangle(bounds.centerX, y, bounds.width - 26, 40, rowIndex === 3 ? accent.color : 0xffffff, rowIndex === 3 ? 0.16 : 0.045)
+        .setStrokeStyle(rowIndex === 3 ? 1.1 : 0.8, accent.color, rowIndex === 3 ? 0.8 : 0.28);
       this.pageContentLayer?.add(rowBg);
       r.forEach((cell, colIndex) => {
         this.pageContentLayer?.add(
@@ -1177,6 +1354,7 @@ export class ProChessScene extends Phaser.Scene {
   private renderTournamentPage(): void {
     if (!this.pageContentLayer) return;
     const bounds = this.getPageContentBounds();
+    const pageAccent = this.getPageAccent("Tournament");
     const centerX = bounds.centerX;
     const contentLeft = bounds.left;
     const contentRight = bounds.right;
@@ -1208,18 +1386,18 @@ export class ProChessScene extends Phaser.Scene {
       }
     };
 
-    const topPanel = this.add.rectangle(centerX, infoTop + infoHeight * 0.5, contentWidth, infoHeight, 0x0f1724, 0.98)
-      .setStrokeStyle(1.2, 0x446483, 0.55);
+    const topPanel = this.add.rectangle(centerX, infoTop + infoHeight * 0.5, contentWidth, infoHeight, 0xffffff, 0.05)
+      .setStrokeStyle(1.2, pageAccent.color, 0.55);
     const leftMetric = this.add.text(contentLeft + 18, infoTop + 22, "Format: Portal Arena", {
       fontFamily: this.theme.fontUI,
       fontSize: compact ? "14px" : "16px",
-      color: "#edf6ff",
+      color: "#fff7d6",
       fontStyle: "600"
     }).setOrigin(0, 0.5);
     const middleMetric = this.add.text(compact ? contentLeft + 18 : contentLeft + 220, compact ? infoTop + 46 : infoTop + 22, "Portal: Shared Center", {
       fontFamily: this.theme.fontUI,
       fontSize: compact ? "14px" : "16px",
-      color: "#f0c7d6",
+      color: "#00f2ff",
       fontStyle: "600"
     }).setOrigin(0, 0.5);
     const rightMetric = this.add.text(contentRight - 18, compact ? infoTop + 46 : infoTop + 22, connectionLabel, {
@@ -1231,7 +1409,7 @@ export class ProChessScene extends Phaser.Scene {
     const cardsHeader = this.add.text(contentLeft + 16, cardsHeaderY, "PLAY MODES", {
       fontFamily: this.theme.fontUI,
       fontSize: compact ? "12px" : "13px",
-      color: this.theme.hudTextDim,
+      color: "#ffe08a",
       fontStyle: "700",
       letterSpacing: 2
     }).setOrigin(0, 0.5);
@@ -1248,7 +1426,7 @@ export class ProChessScene extends Phaser.Scene {
       badge: string,
       onClick: () => void
     ) => {
-      const shell = this.add.rectangle(x, y, width, height, 0x121b29, 0.98)
+      const shell = this.add.rectangle(x, y, width, height, 0xffffff, 0.052)
         .setStrokeStyle(1.2, accent, 0.72);
       const accentBar = this.add.rectangle(x, y - height * 0.5 + 7, width, 6, accent, 0.95);
       const badgeBg = this.add.rectangle(x + width * 0.5 - 72, y - height * 0.5 + 28, 82, 24, accent, 0.16)
@@ -1262,13 +1440,13 @@ export class ProChessScene extends Phaser.Scene {
       const titleText = this.add.text(x - width * 0.5 + 32, y - height * 0.5 + 48, title, {
         fontFamily: this.theme.fontUI,
         fontSize: width < 320 ? "24px" : "28px",
-        color: "#eef6ff",
+        color: "#ffffff",
         fontStyle: "700"
       }).setOrigin(0, 0.5);
       const bodyText = this.add.text(x - width * 0.5 + 32, y - height * 0.5 + 84, body, {
         fontFamily: this.theme.fontUI,
         fontSize: width < 320 ? "15px" : "16px",
-        color: "#9db5ce",
+        color: "#d9e7f0",
         wordWrap: { width: width - 64 }
       }).setOrigin(0, 0);
       const actionBg = this.add.rectangle(x, y + height * 0.5 - 28, Math.min(width - 64, 260), 36, accent, 0.16)
@@ -1340,12 +1518,12 @@ export class ProChessScene extends Phaser.Scene {
       }
     );
 
-    const footerPanel = this.add.rectangle(centerX, footerCenterY, contentWidth, footerHeight, 0x0f1724, 0.98)
-      .setStrokeStyle(1.1, 0x486885, 0.5);
+    const footerPanel = this.add.rectangle(centerX, footerCenterY, contentWidth, footerHeight, 0xffffff, 0.048)
+      .setStrokeStyle(1.1, pageAccent.color, 0.5);
     const footerHeader = this.add.text(contentLeft + 16, footerTop + 18, "ROOM LOBBY", {
       fontFamily: this.theme.fontUI,
       fontSize: compact ? "12px" : "13px",
-      color: this.theme.hudTextDim,
+      color: "#ffe08a",
       fontStyle: "700",
       letterSpacing: 2
     }).setOrigin(0, 0.5);
@@ -1372,17 +1550,17 @@ export class ProChessScene extends Phaser.Scene {
       infoPaneCenterY,
       infoPaneWidth,
       infoPaneHeight,
-      0x111a28,
-      0.94
-    ).setStrokeStyle(1, 0x39556f, 0.5);
+      0xffffff,
+      0.04
+    ).setStrokeStyle(1, pageAccent.color, 0.38);
     const actionPane = this.add.rectangle(
       actionPaneLeft + actionPaneWidth * 0.5,
       actionPaneCenterY,
       actionPaneWidth,
       actionPaneHeight,
-      0x111a28,
-      0.94
-    ).setStrokeStyle(1, 0x39556f, 0.5);
+      0xffffff,
+      0.04
+    ).setStrokeStyle(1, pageAccent.color, 0.38);
 
     const roomTitle = this.add.text(infoPaneLeft + 14, compact ? infoPaneTop + 16 : infoPaneTop + 18, roomStatus, {
       fontFamily: this.theme.fontUI,
@@ -1540,6 +1718,7 @@ export class ProChessScene extends Phaser.Scene {
   private renderTrainingPage(): void {
     if (!this.pageContentLayer) return;
     const bounds = this.getPageContentBounds();
+    const pageAccent = this.getPageAccent("Training");
     const compact = bounds.width < 760;
     const catalog = getLessonCatalog();
     const groups: Array<{
@@ -1552,18 +1731,23 @@ export class ProChessScene extends Phaser.Scene {
       { difficulty: "advanced", title: "Advanced", subtitle: "Practice deeper combinations and conversion." }
     ];
 
-    const intro = this.add.rectangle(bounds.centerX, bounds.top + 24, bounds.width, 60, 0x101a28, 0.98)
-      .setStrokeStyle(1.1, 0x456381, 0.55);
-    const introText = this.add.text(bounds.centerX, bounds.top + 24, "Training lessons are grouped by difficulty. Ready lessons launch immediately; unfinished ones stay visible as coming soon. Use the tabs to jump to a section.", {
+    const introY = bounds.top + 32;
+    const introHeight = compact ? 74 : 68;
+    const tabY = bounds.top + introHeight + 72;
+    const sectionStartY = tabY + 78;
+
+    const intro = this.add.rectangle(bounds.centerX, introY, bounds.width, introHeight, 0xffffff, 0.055)
+      .setStrokeStyle(1.1, pageAccent.color, 0.55);
+    const introText = this.add.text(bounds.centerX, introY, "Choose a training level, then launch any ready lesson. Unfinished lessons remain visible as coming soon.", {
       fontFamily: this.theme.fontUI,
-      fontSize: compact ? "15px" : "16px",
-      color: "#cfe1f5",
+      fontSize: compact ? "14px" : "16px",
+      color: "#e2fff0",
       align: "center",
-      wordWrap: { width: bounds.width - 48 }
+      lineSpacing: 4,
+      wordWrap: { width: bounds.width - 64 }
     }).setOrigin(0.5);
     this.pageContentLayer.add([intro, introText]);
 
-    const tabY = bounds.top + 78;
     const tabHeight = 34;
     const tabGap = 10;
     const tabWidth = compact
@@ -1580,45 +1764,45 @@ export class ProChessScene extends Phaser.Scene {
       { difficulty: "advanced", label: "Advanced", fill: 0xf2b76b }
     ];
 
-    const tabTitle = this.add.text(bounds.left + 16, tabY - 18, "Jump to section", {
+    const tabTitle = this.add.text(bounds.left + 16, tabY - 31, "Select level", {
       fontFamily: this.theme.fontUI,
       fontSize: compact ? "11px" : "12px",
-      color: "#8fb2d4",
+      color: "#92ffc5",
       fontStyle: "700",
       letterSpacing: 1.5
     }).setOrigin(0, 0.5);
-    this.pageChromeLayer?.add(tabTitle);
+    this.pageContentLayer.add(tabTitle);
 
-    const tabButtons: Phaser.GameObjects.Rectangle[] = [];
-    const tabLabels: Phaser.GameObjects.Text[] = [];
     tabSpecs.forEach((spec, index) => {
       const x = tabLeft + tabWidth * 0.5 + index * (tabWidth + tabGap);
-      const button = this.add.rectangle(x, tabY, tabWidth, tabHeight, spec.fill, 0.14)
-        .setStrokeStyle(1.2, spec.fill, 0.85)
+      const isActive = spec.difficulty === this.trainingSelectedDifficulty;
+      const button = this.add.rectangle(x, tabY, tabWidth, tabHeight, spec.fill, isActive ? 0.34 : 0.14)
+        .setStrokeStyle(isActive ? 2 : 1.2, spec.fill, isActive ? 1 : 0.85)
         .setInteractive({ useHandCursor: true })
         .on("pointerdown", () => {
-          this.scrollTrainingToSection(spec.difficulty);
+          this.trainingSelectedDifficulty = spec.difficulty;
+          this.pageScrollY = 0;
+          this.pageScrollMax = 0;
+          this.renderPageContent("Training");
           this.playTone(360 + index * 35, 0.05);
         });
       const label = this.add.text(x, tabY, spec.label, {
         fontFamily: this.theme.fontUI,
         fontSize: compact ? "13px" : "14px",
-        color: "#edf6ff",
+        color: isActive ? "#ffffff" : "#edf6ff",
         fontStyle: "700"
-      }).setOrigin(0.5);
-      tabButtons.push(button);
-      tabLabels.push(label);
-      this.pageChromeLayer?.add([button, label]);
+      }).setOrigin(0.5).setScale(isActive ? 1.03 : 1);
+      this.pageContentLayer?.add([button, label]);
     });
 
     const columns = compact ? 1 : bounds.width >= 1040 ? 3 : 2;
     const cardGap = 14;
-    const rowGap = 12;
+    const rowGap = 16;
     const sectionGap = 18;
     const cardWidth = compact
       ? bounds.width
       : Math.floor((bounds.width - cardGap * (columns - 1)) / columns);
-    const cardHeight = compact ? 74 : 72;
+    const cardHeight = compact ? 112 : 106;
     const headerHeight = compact ? 42 : 46;
     const statusStyles: Record<"ready" | "coming-soon", { label: string; fill: number; text: string }> = {
       ready: { label: "READY", fill: 0x63d690, text: "#d9fff0" },
@@ -1630,14 +1814,15 @@ export class ProChessScene extends Phaser.Scene {
       advanced: 0xf2b76b
     };
 
-    let cursorY = bounds.top + 126;
+    let cursorY = sectionStartY;
     let contentBottom = cursorY;
 
-    for (const group of groups) {
+    const selectedGroup = groups.find((group) => group.difficulty === this.trainingSelectedDifficulty) ?? groups[0];
+    for (const group of [selectedGroup]) {
       const lessons = catalog.filter((lesson) => lesson.difficulty === group.difficulty);
       const sectionTop = cursorY;
       this.trainingSectionTargets[group.difficulty] = sectionTop;
-      const sectionHeader = this.add.rectangle(bounds.centerX, sectionTop + 16, bounds.width, headerHeight, 0x101a28, 0.96)
+      const sectionHeader = this.add.rectangle(bounds.centerX, sectionTop + 16, bounds.width, headerHeight, 0xffffff, 0.05)
         .setStrokeStyle(1, difficultyColors[group.difficulty], 0.42);
       const sectionTitle = this.add.text(bounds.left + 18, sectionTop + 16, group.title, {
         fontFamily: this.theme.fontUI,
@@ -1658,11 +1843,10 @@ export class ProChessScene extends Phaser.Scene {
         const x = compact
           ? bounds.centerX
           : bounds.left + cardWidth * 0.5 + column * (cardWidth + cardGap);
-        const y = sectionTop + headerHeight + 26 + row * (cardHeight + rowGap);
+        const y = sectionTop + headerHeight + 34 + row * (cardHeight + rowGap);
         const status = statusStyles[lesson.status];
         const isReady = lesson.status === "ready";
-        const cardAlpha = isReady ? 0.94 : 0.74;
-        const card = this.add.rectangle(x, y, cardWidth, cardHeight, 0x162637, cardAlpha)
+        const card = this.add.rectangle(x, y, cardWidth, cardHeight, 0xffffff, isReady ? 0.06 : 0.035)
           .setStrokeStyle(1.1, difficultyColors[group.difficulty], isReady ? 0.72 : 0.42);
         if (isReady) {
           card.setInteractive({ useHandCursor: true }).on("pointerdown", () => {
@@ -1674,28 +1858,33 @@ export class ProChessScene extends Phaser.Scene {
           card.setAlpha(0.68);
         }
 
-        const title = this.add.text(x - cardWidth * 0.5 + 18, y - 14, lesson.title, {
+        const cardLeft = x - cardWidth * 0.5;
+        const cardTop = y - cardHeight * 0.5;
+        const title = this.add.text(cardLeft + 18, cardTop + 13, lesson.title, {
           fontFamily: this.theme.fontUI,
           fontSize: compact ? "18px" : "19px",
           color: "#edf6ff",
-          fontStyle: "700"
-        }).setOrigin(0, 0.5);
-        const description = this.add.text(x - cardWidth * 0.5 + 18, y + 8, lesson.description, {
+          fontStyle: "700",
+          lineSpacing: 2,
+          wordWrap: { width: cardWidth - 166 }
+        }).setOrigin(0, 0);
+        const description = this.add.text(cardLeft + 18, cardTop + 60, lesson.description, {
           fontFamily: this.theme.fontUI,
           fontSize: compact ? "12px" : "13px",
           color: "#c3d8ec",
-          wordWrap: { width: cardWidth - 132 }
-        }).setOrigin(0, 0.5);
-        const meta = this.add.text(x + cardWidth * 0.5 - 18, y - 14, `${lesson.estimatedTime}m`, {
+          lineSpacing: 2,
+          wordWrap: { width: cardWidth - 150 }
+        }).setOrigin(0, 0);
+        const meta = this.add.text(x + cardWidth * 0.5 - 18, cardTop + 18, `${lesson.estimatedTime}m`, {
           fontFamily: this.theme.fontUI,
           fontSize: "12px",
           color: "#8fb2d4",
           fontStyle: "700"
-        }).setOrigin(1, 0.5);
+        }).setOrigin(1, 0);
         const badgeWidth = status.label.length * 8 + 20;
-        const badge = this.add.rectangle(x + cardWidth * 0.5 - 54, y + 15, badgeWidth, 22, status.fill, isReady ? 0.2 : 0.14)
+        const badge = this.add.rectangle(x + cardWidth * 0.5 - 54, cardTop + cardHeight - 26, badgeWidth, 22, status.fill, isReady ? 0.2 : 0.14)
           .setStrokeStyle(1, status.fill, 0.72);
-        const badgeText = this.add.text(x + cardWidth * 0.5 - 54, y + 15, status.label, {
+        const badgeText = this.add.text(x + cardWidth * 0.5 - 54, cardTop + cardHeight - 26, status.label, {
           fontFamily: this.theme.fontUI,
           fontSize: "11px",
           color: status.text,
@@ -1706,26 +1895,26 @@ export class ProChessScene extends Phaser.Scene {
       });
 
       const rows = Math.max(1, Math.ceil(lessons.length / columns));
-      contentBottom = Math.max(contentBottom, sectionTop + headerHeight + 26 + rows * cardHeight + (rows - 1) * rowGap);
+      contentBottom = Math.max(contentBottom, sectionTop + headerHeight + 34 + rows * cardHeight + (rows - 1) * rowGap);
       cursorY = contentBottom + sectionGap;
     }
 
     const viewportBottom = bounds.bottom - 18;
     this.pageScrollMax = Math.max(0, contentBottom - viewportBottom);
     this.syncPageScrollOffset();
-    this.applyTrainingTabState(tabSpecs, tabButtons, tabLabels);
   }
 
   private renderOthersPage(): void {
     if (!this.pageContentLayer) return;
     const bounds = this.getPageContentBounds();
     const compact = bounds.width < 760;
-    const intro = this.add.rectangle(bounds.centerX, bounds.top + 24, bounds.width, 60, 0x101a28, 0.98)
-      .setStrokeStyle(1.1, 0x456381, 0.55);
+    const accent = this.getPageAccent("Others");
+    const intro = this.add.rectangle(bounds.centerX, bounds.top + 24, bounds.width, 60, 0xffffff, 0.055)
+      .setStrokeStyle(1.1, accent.color, 0.55);
     const introText = this.add.text(bounds.centerX, bounds.top + 24, "Utility actions, profile maintenance, and quick project tools live here.", {
       fontFamily: this.theme.fontUI,
       fontSize: compact ? "15px" : "16px",
-      color: "#cfe1f5",
+      color: "#f3ddff",
       align: "center",
       wordWrap: { width: bounds.width - 48 }
     }).setOrigin(0.5);
@@ -1738,8 +1927,8 @@ export class ProChessScene extends Phaser.Scene {
     actions.forEach((action, i) => {
       const y = bounds.top + 114 + i * 70;
       const btn = this.add
-        .rectangle(bounds.centerX, y, bounds.width, 50, 0x132131, 0.92)
-        .setStrokeStyle(1.1, 0x86bde8, 0.75)
+        .rectangle(bounds.centerX, y, bounds.width, 50, 0xffffff, 0.052)
+        .setStrokeStyle(1.1, accent.color, 0.75)
         .setInteractive({ useHandCursor: true })
         .on("pointerdown", action.run);
       const text = this.add
@@ -1753,7 +1942,7 @@ export class ProChessScene extends Phaser.Scene {
         .text(bounds.right - 22, y, "OPEN", {
           fontFamily: this.theme.fontUI,
           fontSize: compact ? "13px" : "14px",
-          color: "#9fd0ff",
+          color: accent.text,
           fontStyle: "700"
         })
         .setOrigin(1, 0.5);
@@ -1922,7 +2111,7 @@ export class ProChessScene extends Phaser.Scene {
   private scrollTrainingToSection(difficulty: "beginner" | "intermediate" | "advanced"): void {
     if (this.pageCurrentName !== "Training" || !this.pageContentLayer) return;
     const bounds = this.getPageContentBounds();
-    const anchorY = bounds.top + 118;
+    const anchorY = bounds.top + 176;
     const target = this.trainingSectionTargets[difficulty] - anchorY;
     this.pageScrollY = Phaser.Math.Clamp(target, 0, this.pageScrollMax);
     this.renderPageContent("Training");
@@ -1957,14 +2146,15 @@ export class ProChessScene extends Phaser.Scene {
   }
 
   private getPageContentBounds(): { centerX: number; centerY: number; width: number; height: number; left: number; right: number; top: number; bottom: number } {
-    const centerX = this.scale.width * 0.5;
-    const centerY = this.scale.height * 0.5;
-    const width = Phaser.Math.Clamp(this.scale.width - 120, 640, 980);
-    const height = Phaser.Math.Clamp(this.scale.height - 120, 560, 700);
-    const left = centerX - width * 0.5;
-    const right = centerX + width * 0.5;
-    const top = centerY - height * 0.5;
-    const bottom = centerY + height * 0.5;
+    const frame = this.getPageFrame();
+    const width = frame.width - 72;
+    const height = frame.height - 144;
+    const centerX = frame.centerX;
+    const centerY = frame.top + 112 + height * 0.5;
+    const left = frame.left + 36;
+    const right = frame.right - 36;
+    const top = frame.top + 112;
+    const bottom = frame.bottom - 32;
     return { centerX, centerY, width, height, left, right, top, bottom };
   }
 
